@@ -1,0 +1,71 @@
+package chapter3;
+
+ 
+
+import java.util.Scanner;
+
+ 
+
+public class switchEx4 {
+
+ 
+
+	public static void main(String[] args) {
+
+		//키보드의 입력을 받는다
+
+				//1.비가 온다
+
+				//2비가 오지 않는다
+
+				
+
+				//비가 오면 지하철을 탄다
+
+				//비가 오지 않으면 버스를 탄다
+
+				
+
+				//1번 선택시 오늘은 비가 오기 때문에 지하철을 타겠습니다
+
+			    //2번 선택시 오늘은 비가 오지 않기 때문에 버스를 타겠습니다
+
+		Scanner sc = new Scanner(System.in);
+
+		String rain = null;
+
+		
+
+		System.out.println("비가온다 비가 오지 않는다 중 하나를 선택하시오");
+
+		rain = sc.nextLine();
+
+		
+
+		switch(rain) {
+
+		case "비가온다":
+
+			System.out.println("오늘은 비가 오기 때문에 지하철을 타겠습니다");
+
+			break;
+
+		case "비가 오지 않는다":
+
+			System.out.println("오늘은 비가 오지 않기 때문에 버스를 타겠습니다");
+
+			break;
+
+		default :
+
+			System.out.println("잘못입력하였습니다");
+
+		}
+
+		
+
+	}
+
+ 
+
+}
