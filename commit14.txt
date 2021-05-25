@@ -1,0 +1,47 @@
+﻿package chapter5;
+//1개의 배열을 받을 수 있는 메개변수를 가진다
+	//메소드의 이름은 reverseArray
+	//반환형의 이름은 m.arrayReverse
+	//배열 안의 값은 {1,2,3,4,5,6,7,8,9,10}와 {10,9,8,7,6,5,4,3,2,1};
+	//배열 {1,2,3,4,5,6,7,8,9,10}을 {10,9,8,7,6,5,4,3,2,1};로 바꾸는 프로그램 출력
+public class MethodEx5 {
+
+	int[] arrayReverse(int[] array) { // 1개의 배열을 받을 수 있는 메개변수 메소드의 이름은 reverseArray
+
+		int[] reverseArray = new int[10];  //12345678910을 반대로 출력하면 10987654321이므로 새로운 배열을 생성하고
+
+		int j = array.length - 1; // 새로운 배열의 시작점을 arr의 배열의 정반대로하고
+
+		
+
+		for (int i = 0; i < array.length; i++, j--) { //새로운배열은 index값이 왼쪽으로 가고 원래의 array배열은 오른쪽으로 가게하기에 i++, j--를 입력 
+
+			reverseArray[j] = array[i]; //EX) reverseArray[9 ]= array[0] reverseArray[8] = array[1] reverseArray[7]= array[6]~~~ 즉 reverseArray[j]는 array[i]의 순서에 정반대로 출력이 된다
+ 
+		}
+
+		return reverseArray; //  reverseArray배열을 반환
+
+	}
+
+	public static void main(String[] args) {
+
+		MethodEx5 m = new MethodEx5();
+
+		int[] arr = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }; //배열 안의 값은 {1,2,3,4,5,6,7,8,9,10}와 {10,9,8,7,6,5,4,3,2,1};
+
+		int[] arr2 = { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 }; //배열 안의 값은 {1,2,3,4,5,6,7,8,9,10}와 {10,9,8,7,6,5,4,3,2,1};
+
+		int[] arr3 = new int[10]; // reverseArray메소드 함수를 반환할 새로운 변수입력
+
+		arr3 = m.arrayReverse(arr); // 반환형함수 arr입력
+
+		for (int i : arr3) { //arr의 index만큼 for문
+
+			System.out.println(i); //reverseArray출력
+
+		}
+
+	}
+
+}
