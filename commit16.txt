@@ -1,0 +1,84 @@
+문제
+자동차가 있는데 세단과 트럭이 있다
+자동차와 트럭의 색깔과 속도는 부모클래스로 입력받고
+자식 클래스에는 각각 세단의 좌석수와 트럭의 좌석수 자동차의 색깔 입력받아
+출력은 세단과 트럭의 속도와 좌석수를 입력받는다
+
+자동차 속도 세단 300Km 트럭100Km
+자동차 좌석수 세단 5 트럭30
+자동차 색깔 세단 빨강색 트럭 노랑색
+
+출력결과
+예시
+승용차의 속도는300Km이고 좌석수는5개 색깔은 빨강색 입니다
+트럭의 속도는100Km이고 좌석수는50개 색깔은  노랑색입니다
+
+package chapter7;
+
+public class Car {
+   //자동차의 색은 String color로 받기 로
+   //자동차의 속도는 int형  speed변수로 받기
+  String color;
+  int speed;
+  
+  //승용차의 속도를 구하는 것은 부모클래스에서 받기
+   public void Upspeed(int value) {
+	   speed += value;
+	   
+   }
+    public void Carcolor(String color) {
+    	this.color = color;
+    }
+ 
+}
+------------------------------------------------------
+
+package chapter7;
+
+public class Sedan extends Car { //부모클래스에서 자동차의 속도를 상속받고
+	     //자식 클래스1인 sedan 클래스에서는 자석수를 입력받고 반환
+	int seatNum;
+	
+	int getseatNum() {
+		return seatNum;
+	}
+
+}
+------------------------------------------------------
+package chapter7;
+
+public class Truck extends Car{ //부모클래스에서 속도를 상속받기
+	 //좌석수는 capacity의 변수로 두기
+	int capacity;
+	
+	int getcapacity() {
+		return capacity;
+	}
+	
+
+}
+
+------------------------------------------------------
+package chapter7;
+
+public class Result {
+
+	public static void main(String[] args) {
+		
+	    Sedan sedan1 = new Sedan();
+	    Truck truck1 = new Truck();
+		
+		 sedan1.Upspeed(200);//세단의 속도는 200으로
+		 truck1.Upspeed(100); //트럭의 속도는 100만큼올림
+        
+		  sedan1.seatNum = 5;//세단의 좌석수는 5
+		 truck1.capacity = 50;//트럭의 좌석수는 50
+		 
+		 sedan1.Carcolor("빨간색");
+		 truck1.Carcolor("노란색");
+		 
+		 System.out.println("승용차의 속도는 "+sedan1.speed +"Km이고 좌석수는 "+sedan1.getseatNum() + "개이고 색깔은 "+ sedan1.color +"입니다");
+		 System.out.println("트럭의 속도는 "+truck1.speed +"Km이고 좌석수는 "+truck1.getcapacity() + "개이고 색깔은 "+truck1.color +"입니다");
+	}
+
+}
