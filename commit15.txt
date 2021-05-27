@@ -1,0 +1,108 @@
+package chapter6_2;
+/*클래스와 메소드를 이용하여 학생이 버스를 타고 타고나기전의 돈과 타고난 후의 금액을 구하시오
+이름:홍길동 처음에 가지고 있던 돈 20000원
+버스비 1300원
+
+출력예제
+홍길동의 남은 돈은 20000원입니다
+버스 43다 1317의 승객은 1명이고 수입은 1300원입니다
+홍길동의 남은 돈은 18700원입니다
+*/
+
+public class Bus {
+
+private String busNumber; // 43다 131
+private int passengerCount;
+private int money;
+
+ public Bus(String busNumber) {
+ this.busNumber = busNumber;
+ passengerCount = 0; //승객수
+ money = 0; //수입
+ 
+ }
+ 
+ public void take(int money) {  //b.take(1300)이므로 money에 1300원 대입
+ this.money += money; //1300원
+     passengerCount++;  //승객수 증가
+ }
+ public void showInfo() {
+
+System.out.println("버스" + busNumber + "의 승객은" + passengerCount + "명이고, 수입은" + money +"입니다");
+
+}
+ 
+}
+  --------------------------------------------------------------------------------------------------------------------------------
+package chapter6_2;
+
+ 
+
+// 매개변수 : 중간에서 연결 또는 전달을 도와주는 역할
+public class Student {
+
+private String studentname;
+private int money;
+
+public Student(String name, int money) {
+
+this.studentname = name;
+
+  this.money = money;
+}
+
+public void takeBus(Bus bus) {   //son.takeBus(b);즉 bus에 b를 입력 
+bus.take(1300);              //b.take 즉 class Bus의 인스턴스가 b이므로 class Bus의 take메소드로가서 1300원 대입
+this.money -= 1300;
+
+}
+
+public void showInfo() {
+System.out.println(studentname + "의 남은 돈은 " + money + "원 입니다.");
+}
+}
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+package chapter6_2;
+
+ 
+
+public class TakeTrans {
+
+ 
+
+public static void main(String[] args) {
+
+Student son = new Student ("홍길동", 20000);
+
+Bus b = new Bus("43다 1317");
+
+Bus b2 = new Bus("12나 1257");
+
+
+ 
+        son.showInfo();   //이해했음
+
+
+
+son.takeBus(b);
+
+b.showInfo();  //이해했음
+
+son.showInfo();
+
+
+
+
+
+
+
+}
+
+
+
+ 
+
+ 
+
+}
