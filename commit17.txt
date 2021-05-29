@@ -1,0 +1,29 @@
+package ArratTest;
+
+public class Circle3{
+	int radius;  //필드
+	
+	public void Circle3(int radius) {
+		this.radius = radius;  //매게변수를 받고 그것을 Circle3에 정의된 값과 같게 해줌
+	}
+	double getArea() {   //출력문
+		return 3.14 * radius * radius;
+	}
+	
+}
+
+-------------------------------------------------------------------
+package ArratTest;
+
+public class CirCleArray  {
+
+	public static void main(String[] args) {
+		Circle3[] c = new Circle3[5];  //배열 인스턴스 c의 지역변수를 선언하고 값을 5개를 주는 배열로 초기화
+	
+	for(int i = 0 ;i < c.length; i++) {
+		c[i] = new Circle3(i);  
+		System.out.println((int)c[i].getArea()); //메소드 호출 + 값을 double형에서 int 형으로 다운캐스팅
+	       }
+
+           }
+}
