@@ -1,0 +1,138 @@
+package chapter7;
+/*
+김준일 : SILVER 등급 고객번호 10010 적립된 포인트는 1100점 지불금액은 10000점 
+이은수: VIP 등급 고객번호 10020 적립된 포인트는 1000점 지불금액은 10000점
+
+김준일님의 등급은 SILVER이며, 보너스 포인트는 1000입니다.
+이은수님의 등급은 VIP이며, 보너스 포인트는 1000입니다. 감사합니다.
+========할인율과 보너스 포인 계산========
+김준일님이  10000원 지불하였습니다.
+김준일님의 등급은 SILVER이며, 보너스 포인트는 1100입니다.
+이은수님이  9000원 지불하였습니다.
+이은수님의 등급은 VIP이며, 보너스 포인트는 1500입니다. 감사합니다.
+	를 클래스를 이용하여 출력하라
+*/
+
+public class Customer extends People{
+	private int customerId;			//회원 번호
+	private String customerName;	//고객 이름
+	private String customerGrade;	//고객 등급
+	private int bonusPoint;			//보너스 포인트
+	private double bonusRatio;		//적립 비율
+	
+	public int getCustomerId() {
+		return customerId;
+	}
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
+	public String getCustomerName() {
+		return customerName;
+	}
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+	public String getCustomerGrade() {
+		return customerGrade;
+	}
+	public void setCustomerGrade(String customerGrade) {
+		this.customerGrade = customerGrade;
+	}
+	public int getBonusPoint() {
+		return bonusPoint;
+	}
+	public void setBonusPoint(int bonusPoint) {
+		this.bonusPoint = bonusPoint;
+	}
+	public double getBonusRatio() {
+		return bonusRatio;
+	}
+	public void setBonusRatio(double bonusRatio) {
+		this.bonusRatio = bonusRatio;
+	}
+	
+	public Customer() {
+		initCustomer();
+	}
+	
+	public Customer(int id, String name) { 생성자
+		customerId = id;  //고객의 번호
+		customerName = name;   //고객의 이름
+		initCustomer();
+	}
+	
+	private void initCustomer() {
+		customerGrade = "SILVER"; //고객의 등급
+		bonusRatio = 0.01; //SILVER등급 고객의 할인비율
+	}
+	
+	public int calcPrice(int price) {
+		bonusPoint += price * bonusRatio;
+		return price;
+	}
+	
+	public String showCustomerInfo() {
+		return customerName + "님의 등급은 " + customerGrade + "이며, 보너스 포인트는 "
+				+ bonusPoint + "입니다.";
+	}
+}
+---------------------------------------------------------------------------------------------------------------------
+package chapter7;
+
+public class VIPCustomer extends Customer {
+	private int agentId;	//VIP를 관리해주는 담당 사원의 아이디
+	private double saleRatio;	//VIP 할인율
+	
+	public VIPCustomer(int id, String name, int agentId) {
+		super(id, name);
+		super.setCustomerGrade("VIP");
+		super.setBonusRatio(0.05);		//5%를 적립
+		saleRatio = 0.1;				//10% 할인
+		this.agentId = agentId;
+	}
+	
+	@Override  //VIP 보너스포인트 계산을 위한 오버로딩
+	public int calcPrice(int price) {
+		super.setBonusPoint(super.getBonusPoint() + (int)(price * super.getBonusRatio()));
+		return price - (int)(price * saleRatio);
+	}
+	
+	public int getAgentID() {
+		return agentId;
+	}
+	
+	@Override
+	public String showCustomerInfo() {
+		return super.getCustomerName() + "님의 등급은 " + super.getCustomerGrade() + "이며, 보너스 포인트는 " 
+				+ super.getBonusPoint() + "입니다. 감사합니다.";
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------
+package chapter7;
+
+public class CustomerTest {
+
+	public static void main(String[] args) {
+		Customer kim = new Customer(10010, "김준일");
+		Customer lee = new VIPCustomer(10020, "이은수", 12345); //업캐스팅
+		
+		kim.setBonusPoint(1000);
+		lee.setBonusPoint(1000);
+		
+		System.out.println(kim.showCustomerInfo());
+		System.out.println(lee.showCustomerInfo());
+		
+		System.out.println("========할인율과 보너스 포인 계산========");
+		
+		int price = 10000;
+		int kimPrice = kim.calcPrice(price);
+		int leePrice = lee.calcPrice(price);
+		
+		System.out.println(kim.getCustomerName() + "님이  " + kimPrice + "원 지불하였습니다.");
+		System.out.println(kim.showCustomerInfo());
+		System.out.println(lee.getCustomerName() + "님이  " + leePrice + "원 지불하였습니다.");
+		System.out.println(lee.showCustomerInfo());
+		
+	}
+
+}
