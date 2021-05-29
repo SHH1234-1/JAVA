@@ -1,0 +1,43 @@
+package book;
+/*클래스를 이용하여 책의 제목과 저자를 입력하는 프로그램
+
+출력예시:
+책의 제목을 입력해 주십시오 어린왕자
+저자를 입력해 주십시오 생택쥐페리
+잭의 제목은 : 어린왕자 책의 저자는 생텍쥐페리 입니다
+*/
+
+public class Book {
+	String title, author; //필드
+	
+	public void Book1(String title, String author) { // 메소드
+		this.title = title;
+		this.author = author;
+	}
+	
+
+}
+----------------------------------------------------------------------------------------
+package book;
+
+import java.util.Scanner; 
+
+public class BookArray {
+
+	public static void main(String[] args) {
+		Book[] b = new Book[3];
+		Scanner sc = new Scanner(System.in);
+		
+		for(int i = 0; i < b.length; i++) {
+			System.out.print("책의 제목을 입력해 주십시오");
+			String title = sc.nextLine(); //책의 제목을 입력 받음
+			System.out.print("저자를 입력해 주십시오");
+			String auther = sc.nextLine(); //책의저자를 입력받음
+			b[i] = new Book1(title, auther); // Book1 메소드에 들어갈 정보를 b 배열에 입력받음
+		   System.out.println("책의 제목은 : "+ b[i].title + "책의 저자는"+b[i].author+"입니다");	
+		}
+		
+
+	}
+
+}
