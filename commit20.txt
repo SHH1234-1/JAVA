@@ -1,0 +1,54 @@
+/*추상 클래스를 사용하여 crying 라는 추상 메소드를 만들고
+개와 고양이의 울음소리를 출력하시오
+
+출력예시
+월월
+야옹
+*/
+package tutorial18;
+
+abstract class  Animal {
+    abstract void crying(); //추상메소드 추상클래스는 클래스의 인스턴스 생성이 되지 않기 때문에 추상메소드를 적고 하위 클래스에서 오버라이딩 해서 메소드를 쓴다
+
+}
+------------------------------------------------------------------------------------------------------------------------------------
+package tutorial18;
+
+public class Cat extends Animal {
+	
+	@Override
+	void crying() {
+	 System.out.println("야옹");  //메소드 오버라이딩
+		
+	}
+}
+
+------------------------------------------------------------------------------------------------------------------------------------
+package tutorial18;
+
+public class Dog extends Animal{
+	
+	@Override
+	void crying() {
+		
+		System.out.println("월 월");  //메소드 오버라이딩
+	}
+
+}
+------------------------------------------------------------------------------------------------------------------------------------
+package tutorial18;
+
+public class Main {
+
+	public static void main(String[] args) {
+		Dog dog = new Dog();  //인스턴스 생성
+		Cat cat = new Cat();  //인스턴스 생성
+		
+		dog.crying();  //메소드 오버라이딩을 호출
+		cat.crying();  //메소드 오버라이딩을 호출
+
+
+	}
+
+}
+
