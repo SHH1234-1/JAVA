@@ -1,0 +1,45 @@
+package tutorial20;
+
+public interface Dog {  //인터페이스2
+   
+	abstract void crying();   //추상메소드
+	 public void one();        //추상메소드
+}
+-----------------------------------------------------------------------------------
+package tutorial20;
+
+public interface  Cat {   //인터페이스1
+	
+	abstract void crying();    //추상메소드
+    public void two();         //추상메소드
+} 
+-----------------------------------------------------------------------------------
+package tutorial20;
+
+public class Main implements Dog, Cat {    //인터페이스의 다중상속 클래스는 다중상속이 되지않지만 인터페이스는 다중상속이 가능하다
+
+	public static void main(String[] args) {
+		
+		Main main = new Main();        //인스턴스 생성
+		main.crying();                        //메소드 호출
+		main.one();                              //메소드 호출
+		main.two();                               //메소드 호출
+		
+		
+	}
+	@Override                              //메소드 오버라이딩1
+	public void crying() {    
+		System.out.println("월월 ");
+		
+	}
+	@Override                                     //메소드 오버라이딩1
+	public void one() {
+		System.out.println("two");
+		
+	}@Override
+	public void two() {                           //메소드 오버라이딩1
+		System.out.println("one");
+		
+	}
+}
+ 
