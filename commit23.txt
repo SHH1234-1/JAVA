@@ -1,0 +1,29 @@
+package pratice;
+
+import java.util.ArrayList;   //ArrayList를 호출하기 위한 import
+
+/*1.ArrayList클래스를 java.util 패키지에서 import하시오
+ *2.String을 담을 수 있는 ArrayList 객체를 만드시오
+ *3. 리스트에 이름을 추가하시오
+ *4.반복문을 통해 모든 이름을 출력하시오
+ * 
+ * */
+
+public class ArrayListTest {
+	
+
+	public static void main(String[] args) {
+		ArrayList <String> names = new ArrayList<String>();  //ArrayList인스턴스 생성
+
+		
+		names.add("kim");   //add로 ArrayList index에 값 추가
+		names.add("Son");   //add로 ArrayList index에 값 추가
+		names.add("An");    //add로 ArrayList index에 값 추가
+		names.add("park");   //add로 ArrayList index에 값 추가
+		
+    for(int i = 0; i < names.size(); i++) {   //반복문으로 호출
+    	System.out.println("성씨는 " + names.get(i));
+    }
+	}
+
+}
