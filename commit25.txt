@@ -1,0 +1,36 @@
+package pratice;
+
+public class Book {
+	
+	private String title;  
+	private String author;   //필드
+	
+	public Book(String title, String author) {
+		this.title = title;                    //생성자
+		this.author = author;
+		
+	}
+	
+	public String toString() {   //toString 메소드 오버라이딩
+		return String.format("책의 제목은 %s 책의 저자는 %s입니다", title, author);//format c언어의 printf와 같은 형식으로 문자열을 출력 할 수 있게 해주는것
+	}
+	
+}
+------------------------------------------------------------------------------------------------------------------
+package pratice;
+
+
+
+public class BookTest {
+
+	public static void main(String[] args) {
+		
+		Book book = new Book("어린왕자", "생택쥐페리");
+		
+		System.out.println(book);  //.toString()이 생략되어 있음
+		System.out.println(book.toString());  //book과 같은 출력형태
+		
+	  
+		}
+
+}
