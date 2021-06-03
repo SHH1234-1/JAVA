@@ -1,42 +1,92 @@
-package pratice;
+package chapters10_2;
 
-public class Archer {
-     
-	String name;
-	String power;
+public class Member {
+	private int memberId;  //회원의 아이디
+	private String memberName; //회원의 비밀번호
 	
-	public Archer(String name, String power) {
-		this.name = name;
-		this.power = power;
+	public Member(int memberId, String memberName) {   //생성자
+		this.memberId = memberId;                       //private형
+		this.memberName = memberName;             //private형
+	}
+
+	public int getMemberId() {                                  //private형 멤버변수가 선언되어서 getter setter 생성
+		return memberId;
+	}
+
+	public void setMemberId(int memberId) {
+		this.memberId = memberId;
+	}
+
+	public String getMemberName() {
+		return memberName;
+	}
+
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
 	}
 	
-	public boolean equals(Object obj) {   //equals 재정의
-		Archer temp = (Archer) obj;    //Object 클래스 안에 있는 obj객체가 temp라는 객체로 바뀌고 temp객체는 Archer 클래스의 객체이다 다운캐스팅
-		if(name == temp.name && power == temp.power) {
-			return true;
-		}
-		else
-		{ 
-			return false;
-		}
+	@Override
+	public String toString() {    //toString 오버라이딩
+		return memberName + " 회원님의 아이디는 " + memberId + "입니다.";
 	}
+
 }
----------------------------------------------------------------------------
-package pratice;
+----------------------------------------------------------------------------------------------------------------------
+package chapters10_2;
 
-public class Main {
+import java.util.ArrayList;
+
+public class MemberArrayList {
+	private ArrayList<Member> arrayList;  // ArrayList arrayList 생성 
+	
+	public MemberArrayList() {   
+		arrayList = new ArrayList<Member>();   //Member클래스의 멤버변수를 담는(리스트의) ArrayList arrayList 
+	}
+	
+	public void addMember(Member m) {
+		arrayList.add(m);   //arratList의 객체에 Member클래스의 m 인스턴스를 담기
+	}
+	
+	
+	public void showAllMember() {   arratList의 객체를 출력
+		
+		for(int i = 0; i < arrayList.size(); i++) {     //출력하는 방법1
+			Member m = arrayList.get(i);   //arrayList.get(i)를 Member클래스의 m 인스턴스에 담는다
+			System.out.println(m);           //m = m.toString() Member 클래스에서 toString을 오버라이딩 한것이 출력
+		}
+		
+	     
+		for(Member m : arrayList) {                //출력하는 방법2
+			System.out.println(m);           //m = m.toString() Member 클래스에서 toString을 오버라이딩 한것이 출력
+		}
+		System.out.println();
+	}
+	
+	
+}
+---------------------------------------------------------------------------------------------------------------------------------------
+package chapters10_2;
+
+import java.util.Scanner;
+
+public class MemberArrayListTest {
 
 	public static void main(String[] args) {
-		Archer archer1 = new Archer("궁수1", "상");
-		Archer archer2 = new Archer("궁수1", "상");
-		System.out.println(archer1 == archer2);  //archer1  archer2 인스턴스가 다르기 때문에 false
-		System.out.println(archer1.equals(archer2));  //equals는 인스턴스가 아닌 값을 비교하기 때문에 같음
-
+		Scanner sc = new Scanner(System.in);  
+		
+		MemberArrayList aList = new MemberArrayList(); //인스턴스 생성
+		
+		for(int i = 0; i < 2; i++) {
+			System.out.print("회원 아이디: ");
+			int id = Integer.parseInt(sc.nextLine());   //회원 아이디 비밀번호 입력
+			System.out.print("회원 이름: ");  
+			String name = sc.nextLine();
+			
+			aList.addMember(new Member(id, name));  /*Member 생성자에입력받은 id name 값을 보내고 보낸 그 변수를 addMember로 보냄*/
+		}
+		aList.showAllMember();  //arrayList.get()값을 출력
+		
 	}
 
 }
-/*
-출력
-false
-true
-*/
+
