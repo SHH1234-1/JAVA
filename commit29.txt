@@ -1,0 +1,15 @@
+//제네릭 : 제네릭(Generic)은 클래스 내부에서 사용할 데이터 타입을 외부에서 지정하는 기법을 의미한다. 
+package org.opentutorials.javatutorials.generic;
+ 
+class Person<T>{  //제네릭T
+    public T info;   //T형의 데이터 타입을 받는 info멤버 변수
+}
+------------------------------------------------------------------------------------------------- 
+public class GenericDemo {      
+ 
+    public static void main(String[] args) {   
+        Person<String> p1 = new Person<String>();   /*Person클래스 <String>형의 데이터 타입의 p1 인스턴스 생성= 즉 <T>라는 데이터 타입은 아래GenericDemo클래스에서 결정된다 Person클래스(Person클래스 내부)에서 사용될 데이터 타입을 GenericDemo클래스(외부)에서 지정하는것 그것이 제네릭이다*/
+        Person<StringBuilder> p2 = new Person<StringBuilder>();/*마찬가지로 인스턴스 p2의 <T>(데이터 타입은) StringBuilder이다*/
+    }
+ 
+}
