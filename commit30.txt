@@ -1,0 +1,45 @@
+package org.opentutorials.javatutorials.generic;
+class StudentInfo{
+    public int grade;  //멤버변수
+    StudentInfo(int grade){ this.grade = grade; }  
+}
+class StudentPerson{
+    public StudentInfo info;    //멤버변수
+    StudentPerson(StudentInfo info){ this.info = info; }  //생성자
+}
+class EmployeeInfo{
+    public int rank;    //멤버변수
+    EmployeeInfo(int rank){ this.rank = rank; }  //생성자
+}
+class EmployeePerson{
+    public EmployeeInfo info;    //멤버변수
+    EmployeePerson(EmployeeInfo info){ this.info = info; }  //생성자
+}
+public class GenericDemo {
+    public static void main(String[] args) {
+        StudentInfo si = new StudentInfo(2);   /StudentInfo의 클래스의 si라는 인스턴스를 생성하고 StudentInfo의 생성자에2를 넣어준다*/
+
+        StudentPerson sp = new StudentPerson(si); /*StudentPerson의 클래스에 sp라는 인스턴스를 생성하고 StudentPerson의 생성자에 si인스턴스를 넣어준다*/
+
+        System.out.println(sp.info.grade); /* sp인스턴스를 info의 값을 grade에 넣어주고 grade를 출력시킨다 = 2 */  
+
+        EmployeeInfo ei = new EmployeeInfo(1); /*EmployeeInfo클래스에 1이라는 값을 넣어주고 rank가 1이되는 것이 ei라는 인스턴스에 담긴다*/
+
+        EmployeePerson ep = new EmployeePerson(ei); /*EmployeePerson 클래스 ep인스턴스안에  EmployeePerson클래스에 (ei)인스턴스가 들어간 값이 담긴다*/
+        System.out.println(ep.info.rank); /* ep인스턴스의 info 값을 rank에 넣고 출력 = 1 */
+    }  
+}
+/*class StudentPerson{
+    public StudentInfo info;    
+    StudentPerson(StudentInfo info){ this.info = info; }  
+
+  class EmployeePerson{
+    public EmployeeInfo info;    
+    EmployeePerson(EmployeeInfo info){ this.info = info; }  
+}
+의 형식이 중복되어 복잡한 것을 알 수 있다 이것을 제네릭을 통해 코드를 간결하게 한다
+} */
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
