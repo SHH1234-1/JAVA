@@ -1,0 +1,26 @@
+import java.util.HashSet;
+import java.util.Iterator;
+
+public class SetDemo{
+
+   public static void main(String[] args){
+   HashSet<Integer>A = new HashSet<Integer>(); //HashSet형 <Integer>데이터 타입을 가지는 인스턴스 A생성
+   A.add(1);    //인스턴스A에 값 추가
+   A.add(2);
+   A.add(3);
+
+   Iterator hi = A.iterator();  //A의 값을 참조하는 iterator의 hi 인스턴스 생성
+			//A에 값이(1, 2 ,3)이 있는 것을 참조하여 iterator라는 메소드를 참조하여 (1,2,3)이라는 값을 가지고 있는 가상의 hi가 생성
+   while(hi.hasNext()){     //hasNext는 인스턴스안에 값이 존재 할 경우 true 값이 존재하지 않으면 false를 반환함 현재 hi는   iterator라는 메소드를 참조하여 true를 가지고 있으므로 무한루프형성
+   System.out.println(hi.next());  //next는 인스턴스가 가지고 있는 값 중 첫번째 값을 출력하고 그 값을 삭제해버림 즉 1을 출력하고 1이라는 값을 삭제 해버림
+}
+}
+}
+/*
+출력형태 1 2 3
+next형태로 1을 출력하고 hi인스턴스에서는 1이 사라지고 2,3만이 남는데 여기서 다시 while문을 통해 hasNext로가서 2와 3값이 있으므로 true가 되고 next를 실행해 2를 출력하고 2를 hi인스턴스 값에서 삭제
+hi 인스턴스에 3이라는 값이 있으므로 hasNext에서 true가 되고 next를 통해 3이 출력되고 hi인스턴스에서 3을 삭제 
+123이 모두 출력되고 hi라는 인스턴스에 더이상 값이 없으므로 while문은 false가 되므로 그대로 프로그램 종료
+
+중요한것 = iterator형 hi는 인스턴스 A의 값을 참조한 인스턴스이기때문에 hi인스턴스 값이 사라졌다고해도 인스턴스 A에 add로 추가한(1,2,3)은 여전히 삭제되지 않고 남아있다.
+*/
