@@ -1,0 +1,53 @@
+package org.opentutorials.javatutorials.collection;
+ 
+import java.util.*;
+ 
+class Computer implements Comparable{/*sort메소드를 하용하기 위해서는  Comparable 인터페이스를 상속 받아야 한다  */
+    int serial;
+    String owner;
+    Computer(int serial, String owner){  //생성자
+        this.serial = serial;
+        this.owner = owner;
+    }
+    public int compareTo(Object o) { //Object클래스의 o객체를 받는 메소드  compareTo
+        return this.serial - ((Computer)o).serial;//현재의 serial 객체에서 Object클래스 o의 객체를 뺌
+    }
+    public String toString(){
+        return serial+" "+owner;
+    }
+}
+ 
+public class CollectionsDemo {
+     
+    public static void main(String[] args) {
+        List<Computer> computers = new ArrayList<Computer>(); //ArrayList<Computer>를 List computer변수에 저장
+        computers.add(new Computer(500, "egoing"));
+        computers.add(new Computer(200, "leezche"));         //computer인스턴스에 값 추가
+        computers.add(new Computer(3233, "graphittie"));
+        Iterator i = computers.iterator(); // computers 인스턴스의 참조인 Iterator 형 i 인스턴스 생성
+        System.out.println("before");
+        while(i.hasNext()){ //인스턴스 i에 값이 들어 있는 한 무한 루프
+            System.out.println(i.next()); //i 값을 하나 하나 출력
+        }
+        Collections.sort(computers); //computer의 오름차순 정리
+        System.out.println("\nafter");
+        i = computers.iterator();  //인스턴스 computers를 참조하는iterator형 인스턴스 i 생성
+        while(i.hasNext()){
+            System.out.println(i.next());
+        }
+    }
+ 
+}
+/*
+출력형태
+before
+500 egoing
+200 leezche
+3233 graphittie
+ 
+after
+200 leezche
+500 egoing
+3233 graphittie
+
+*/
