@@ -1,0 +1,36 @@
+package org.opentutorials.javatutorials.collection;
+ 
+import java.util.*;
+ 
+public class MapDemo {
+ 
+    public static void main(String[] args) { 
+        HashMap<String, Integer> a = new HashMap<String, Integer>(); /* HashMap의 String 형의 key와 Integer형의 value를 가지는 인스턴스 a를 생성 HashMap은 key 값과 value값 즉 두개의 값을 입력해야하기 때문에 2개의 제네릭을 가진다*/
+        a.put("one", 1);
+        a.put("two", 2);     /* put이라는 메소드를 활용해서 key 값에는 String형을 value값에는 Integer형을 담는다*/
+        a.put("three", 3);
+        a.put("four", 4);
+        System.out.println(a.get("one")); /*a인스턴스의 key값에 접근하여 one 키값의 value값을 출력한다 즉 출력형태 1*/
+        System.out.println(a.get("two"));  /*a인스턴스의 key값에 접근하여 two키값의 value값을 출력한다 즉 출력형태 2*/
+        System.out.println(a.get("three"));  /*a인스턴스의 key값에 접근하여 three 키값의 value값을 출력한다 즉 출력형태 3*/
+         
+        iteratorUsingForEach(a);   /*iteratorUsingForEach의 메소드에 인스턴스 a를 보낸다*/
+        iteratorUsingIterator(a);
+    }
+
+ static void iteratorUsingForEach(HashMap map){ /*이 메소드는 HashMap클래스의 인스턴스를 받는다 즉 map = a*/
+        Set<Map.Entry<String, Integer>> entries = map.entrySet(); /* entries =a map에 들어있는 모든 key와 value 객체를 Set 인스턴스 entries에 담아 리턴*/
+        for (Map.Entry<String, Integer> entry : entries) { /*entries 즉 map에 정의된 keydhk value 값을 Map의 entry객체를 생성해서  담는다*/
+            System.out.println(entry.getKey() + " : " + entry.getValue()); /*값을 호출할대는 get를 붙인다*/
+        }
+    }
+    static void iteratorUsingIterator(HashMap map){
+        Set<Map.Entry<String, Integer>> entries = map.entrySet();//map.entry에 구성되어있는 모든 key와 value값을 Set에 담아서 리턴
+        Iterator<Map.Entry<String, Integer>> i = entries.iterator(); //map.entry에 구성되어있는 모든 key와 value값을 담은 entries객체를  담은 Iterator의 인스턴스 i 생성
+        while(i.hasNext()){ //iterator형의 인스턴스 i에 값이 들어있으면 true 즉 인스턴스 i에 값이 들어있는 한 무한루프 
+            Map.Entry<String, Integer> entry = i.next(); //인스턴스 i에 있는 key값과 value값을 하나 하나씩 Map.Entry의 인스턴스 entry에 넣어준다
+            System.out.println(entry.getKey()+" : "+entry.getValue()); //인스턴스의 호출은 get
+        }
+    }
+ 
+}
