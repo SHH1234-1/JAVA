@@ -1,0 +1,31 @@
+ublic class ExceptionApp {
+    public static void main(String[] args) {
+        System.out.println(1);
+        int[] scores = {10,20,30};
+        try {
+            System.out.println(2);
+           //System.out.println(scores[3]);
+            System.out.println(3);
+            System.out.println(2 / 0); 
+            System.out.println(4);
+        } catch(ArithmeticException e){
+            System.out.println("계산이 잘못된 것 같아요."+e.getMessage()); //e.getMessage()는 에러가 발생한 이유를 알려준다
+            e.printStackTrace(); //e.printStackTrac 예외처리함과 동시에 System.out.println(5);도 동시에 실행시켜주기 위한 메소드 
+        } catch(Exception e){
+            System.out.println("먼가 이상합니다. 오류가 발생했습니다. ");
+        }
+        System.out.println(5);
+    }
+}
+/*
+출력형태
+1
+2
+3
+계산이 잘못된 것 같아요./ by zero
+5                           
+java.lang.ArithmeticExcption: / by zero
+	at ExceptionApp.main(ExceptionApp.java:9)
+위와같이 원래는 System.out.println(2 / 0); 에서 예외처리가 발생한 부분이 생기면 그 예외처리를 하는 메소드를 실행하고
+프로그램이 종료되어야 하지만  예외처리를 한 후에 System.out.println(5); 가 실행되었다 그것이 e.printStackTrac()이다
+*/
