@@ -1,0 +1,27 @@
+
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+ 
+import java.io.FileWriter;
+import java.io.IOException;
+ 
+public class CheckedExceptionApp {
+    public static void main(String[] args) {
+        FileWriter f = null;
+        try {
+            f = new FileWriter("data.txt"); //FileWriter의 f는 fileName이 data.txt이라고하는 문서에 접근하는 정보를 가진다
+            f.write("Hello");  //f에 string 형 hello문자를 추가
+        } catch(IOException e){
+            e.printStackTrace();
+        } finally {
+       
+            if(f  != null) { /*f = new FileWriter("data.txt");에서 예외 처리가 되어버리면 f안에는 아무런 값이 없다 즉 null값이 되는 경우*/
+                try {
+                    f.close();
+                } catch(IOException e){//예외처리
+                    e.printStackTrace(); 
+                }
+            }
+        }
+    }
+}
+ 
