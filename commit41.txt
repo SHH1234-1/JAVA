@@ -1,0 +1,30 @@
+package org.opentutorials.javatutorials.io;
+ 
+import java.util.Scanner;
+import java.io.*;
+ 
+public class Scanner3Demo {
+ 
+    public static void main(String[] args) {
+        try {
+            File file = new File("out.txt");//out txt안에 있는 내용을 file인스턴스에 저장
+            Scanner sc = new Scanner(file); //file 인스턴스안에 있는 내용을 입력받고
+            while(sc.hasNextInt()) {   //입력받은 값에 정수가 있을 경우
+                System.out.println(sc.nextInt()*1000); // 그 정수X1000
+            }
+            sc.close();
+        } catch(FileNotFoundException e){ //예외처리 만일 out.txt파일이 없을 경우
+            e.printStackTrace();  //오류를 출력해주기
+        }
+         
+    }
+ 
+}
+/*
+ File file = new File("out.txt")로 out.text파일의 정보를 가진 인스턴스를 정리하고
+Scanner sc = new Scanner(file); 입력값을 직접 입력하는 것이 아닌 파일에 있는 값을 입력하고
+sc.hasNextInt()를 통해 파일안에 정수가 입력되어 있는지 아닌지를 판별하고
+sc.nextInt()*1000를 통해 정수X1000을 한 값을 출력
+catch(FileNotFoundException e) out.txt 파일이 없을 경우
+e.printStackTrace() 오류 출력
+*/
