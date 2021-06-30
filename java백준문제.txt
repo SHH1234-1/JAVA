@@ -1,0 +1,90 @@
+/*문제 소개
+
+정수 x에 사용할 수 있는 연산은 다음과 같이 세 가지 이다
+
+x가 3으로 나누어 떨어지면, 3으로 나눈다
+
+x가 2로 나누어 떨어지면,2로 나눈다
+
+1을 뺀다
+
+N정수 N이 주어졌을때, 위와 같은 연산 세 개를 적절히 사용해서 1을 만들려고 한다. 연산을 사용하는 횟수의 최솟값을 출력하시오
+
+https://www.acmicpc.net/problem/1463문제 출처
+*/
+ 
+
+package _40_make_one;
+
+import java.util.Scanner;
+
+ 
+
+public class Main {
+
+	public static int min = 1000000;
+
+ 
+
+	public static void doFunc(int num, int way, int cnt) {  /*num 는 입력받은 정수 way는 3으로 나눌경우 2로 나눌경우 1을 뺄경우 cnt 연산이 사용된 카운터수*/
+
+		if (way == 3 && num % 3 == 0) {   /*num이 3의 배수라면*/
+
+			cnt++;    /*카운터를 올리고*/
+
+			num /= way;   /*나눔*/
+
+			for (int i = 1; i <= 3; i++)  /* num값을 1로 만들기 위한 for문*/
+
+				doFunc(num, way, cnt);
+
+		} else if (way == 2 && num % 2 == 0) {
+
+			cnt++;
+
+			num /= way;
+
+			for (int i = 1; i <= 3; i++)
+
+				doFunc(num, way, cnt);
+
+		} else if (num >= 2){
+
+			cnt++;
+
+			num -= 1;
+
+			for (int i = 1; i <= 3; i++)
+
+				doFunc(num, way, cnt);
+
+		}
+
+		if (num == 1 && cnt < min) {  /*num이 1이되면 */
+
+			min = cnt;	/*cnt값을 min에 저장하고*/
+
+			return;
+
+		}
+
+	}
+
+	public static void main(String[] args) {
+
+		int n;
+
+		Scanner sc = new Scanner(System.in);
+
+		n = sc.nextInt();
+
+		for (int i = 1; i <=3; i++)   /*연산이 3개 즉 3으로 나눌때 2로나눌때 1을 뺄때3개 이므로 1~3까지의 범위를 가진 for문을 사용*/
+
+			doFunc(n, i, 0);
+
+		System.out.println(min);   /*cnt값을 그대로 출력*/
+
+	}
+
+}
+
