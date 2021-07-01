@@ -1,0 +1,57 @@
+
+<!--파일이름 forwardTag1.html-->
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+	<h1>Forward Tag Example1</h1>
+	<form method=post action="forwardTag1_1.jsp"><!--넘겨주는 방식은 post방식  forwardTag1_1.jsp로 넘겨줌-->
+		아이디 : <input name="id"><p/><!--input의 기본타입은 text이므로 생략가능-->
+		패스워드: <input type="password" name="pwd"><p/>
+		<input type="submit" value="보내기">
+	</form>
+</body>
+</html>
+----------------------------------------------------------------------------------------------------------------------------------------------------
+<!--파일이름 forwardTag_1.jsp-->
+<%@page contentType="text/html;charset=UTF-8"%>
+<%
+	   request.setCharacterEncoding("UTF-8");
+		String id = request.getParameter("id");  <!--forwardTag1.html에서 input타입의 id 값을 받아옴-->
+		String pwd = request.getParameter("pwd"); <!--forwardTag1.html에서 input타입의 pwd 값을 받아옴-->
+%>
+<html>
+<body>
+<h1>Forward Tag Example1</h1>
+Forward Tag의 포워딩 되기 전의 페이지입니다.
+<%
+	if(id.equals("son")){
+		if(pwd.equals("1234")){
+%>
+			<jsp:forward page="forwardTag1_2.jsp"> <!--포워딩-->
+				<jsp:param name="name" value="손효현"/>
+			</jsp:forward>
+<%
+		}
+	}
+%>
+	<script>
+		history.back();  <!--아이디 비밀번호가 동일하지 않으면 이전 페이지 보여주기-->
+	</script>
+
+</body>
+</html>
+----------------------------------------------------------------------------------------------------------------------------------------------------
+<!--forwardTag1_2.jsp-->
+
+<%@page contentType="text/html;charset=UTF-8"%>
+<%
+	String id = request.getParameter("id");  <!--forwardTag_1.jsp에서 받은 값이 손효현이라면 -->
+	String pwd = request.getParameter("pwd");  <!--forwardTag_1.jsp에서 받은 값이 1234이라면 -->
+%>
+<h1>Forward Tag Example1</h1>
+당신의 아이디는<b><%=id%></b>이고<p/>  <!--출력-->
+패스워드는 <b><%=pwd%></b> 입니다.
+
