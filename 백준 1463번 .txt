@@ -1,0 +1,74 @@
+/*
+백준 1463번
+https://www.acmicpc.net/problem/1463
+문제
+
+정수 X에 사용할 수 있는 연산은 다음과 같이 세 가지 이다.
+
+X가 3으로 나누어 떨어지면, 3으로 나눈다.
+X가 2로 나누어 떨어지면, 2로 나눈다.
+1을 뺀다.
+정수 N이 주어졌을 때, 위와 같은 연산 세 개를 적절히 사용해서 1을 만들려고 한다. 연산을 사용하는 횟수의 최솟값을 출력하시오.
+
+첫째 줄에 1보다 크거나 같고, 10의6승 보다 작거나 같은 정수 N이 주어진다.
+
+10의 경우에 10 -> 9 -> 3 -> 1 로 3번 만에 만들 수 있다.
+*/
+
+package _41_make_one_dp;
+
+import java.util.Scanner;
+
+public class Main {
+
+	static int[] ans = new int[1000001]; //10의 6승
+
+	// 1로만들기 최솟값 구하기
+	// 3 나누고 (나누어 떨어질때)
+	// 2 나누고
+	// 1 뺴고
+	// 10은 3
+	public static void main(String[] args) {
+		ans[2] = 1;  // 2를 1로 나누기 위해서는 2에서 1를 빼던지 2에서 2를 나누면 되기 때문에 1번 그래서 미리 1로 표현해줌
+		ans[3] = 1; // 3을 1로 만드는 방법은 3에서 3을 나누면 되기 때문에 1번 그래서 미리1로 표현해줌
+		// ans[4]  = 2 번 4/3/1 4/2/2
+		// ans[5] = 3 번 5/4/2/2
+		// ans[6] = 2 번 6/3/3   6/2/2
+		
+		Scanner scan = new Scanner(System.in);
+		int input = scan.nextInt();
+		for (int i = 4; i <= 1000000; i++) { //2일때와 3일때는 이미 1이 나온다는 사실을 알기때문에 int를 4번부터 시작한다
+			int a = 99999, b = 99999, c = 99999;  //3으로도 2로도 나누어지지 않는 경우의 수가 있기 때문에 그럴때 그 수자체를 return시키기 위한 기본변수값 
+			for (int w = 1; w <= 3; w++) {
+				if (w == 1) {
+					a = ans[i - 1];
+				} else if (w == 2) {
+					if (i % 2 == 0) {
+						b = ans[i / 2];
+					}
+				} else if (w == 3) {
+					if (i % 3 == 0) {
+						c = ans[i / 3];
+					}
+				}
+			}
+			int min = min(a, b, c);
+			ans[i] = 1 + min;
+		}
+		System.out.println(ans[input]);
+	}
+
+	public static int min(int a, int b, int c) {
+		if (a < b) {
+			if (a < c)
+				return a;
+			else
+				return c;
+		} else {
+			if (b < c)
+				return b;
+			else
+				return c;
+		}
+	}
+}
