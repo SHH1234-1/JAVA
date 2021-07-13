@@ -1,0 +1,87 @@
+/*
+https://www.acmicpc.net/problem/1149
+RGB거리에는 집이 N개 있다. 거리는 선분으로 나타낼 수 있고, 1번 집부터 N번 집이 순서대로 있다.
+
+집은 빨강, 초록, 파랑 중 하나의 색으로 칠해야 한다. 각각의 집을 빨강, 초록, 파랑으로 칠하는 비용이 주어졌을 때, 아래 규칙을 만족하면서 모든 집을 칠하는 비용의 최솟값을 구해보자.
+
+1번 집의 색은 2번 집의 색과 같지 않아야 한다.
+N번 집의 색은 N-1번 집의 색과 같지 않아야 한다.
+i(2 ≤ i ≤ N-1)번 집의 색은 i-1번, i+1번 집의 색과 같지 않아야 한다.
+입력
+첫째 줄에 집의 수 N(2 ≤ N ≤ 1,000)이 주어진다. 둘째 줄부터 N개의 줄에는 각 집을 빨강, 초록, 파랑으로 칠하는 비용이 1번 집부터 한 줄에 하나씩 주어진다. 집을 칠하는 비용은 1,000보다 작거나 같은 자연수이다.
+
+출력
+첫째 줄에 모든 집을 칠하는 비용의 최솟값을 출력한다.
+예제 입력 1 
+3
+26 40 83
+49 60 57
+13 89 99
+예제 출력 1 
+26 + 57 + 13 = 96
+
+*/
+
+package _42_rgb_distance_dp;
+
+import java.util.Scanner;
+
+public class Main {
+
+	static int[][] ans = new int[1002][4]; //첫째줄의 집의 수 N이 주어진다 N은 1000보다 작거나 같다 그래서 1002로 약간 넓게
+	static int[][] rgb = new int[1002][4]; //원래는 R G B의 3만큼 저장하기 위해서 3을 주면 되는데 넓게 4를 줌
+	static int R = 1;   //RGB를 상수 값으로 
+	static int G = 2;
+	static int B = 3;
+	// 10은 3
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		int input = scan.nextInt();   //둘째줄 부터 N개의 줄까지 입력
+		for (int i = 1; i <= input; i++) { //입력받은 줄까지
+			for (int j = R; j <= B; j++) {  //B까지 즉 3까지 (빨강 파랑 초록으로 칠하는 3가지의 경우의 수)
+				rgb[i][j] = scan.nextInt(); //집을 칠하는 비용을 입력
+			}
+		}
+
+		//ans 배열의 초기화
+		for (int i = 1; i <= input; i++) {
+			for (int j = R; j <= 3; j++) {
+				ans[i][j] = 999999999;
+			}
+		}
+		ans[1][R] = rgb[1][R];  // rgb[2][R]  rgb[3][R] // ans[2][R] ans[3][R]=>  
+		ans[1][G] = rgb[1][G];  // rgb[2][G]  rgb[3][G] // ans[2][G] ans[3][G]=>
+		ans[1][B] = rgb[1][B];  // rgb[2][B]  rgb[3][B] // ans[2][B] ans[3][B]=>
+		for (int i = 2; i <= input; i++) {  //첫번째 줄에는 겹치는것 없이 그냥 색칠하면 되므로 손댈 필요가 없기에 2번째 줄부터 출력 그래서 2부터 시작
+			for (int j = R; j <= B; j++) {
+				for (int k = R; k <= B; k++) {
+					if (j != k) { //예를들어 rgb[2][R]을 구할때 rgb[1][R]을 사용하면 안되므로 j=k를 같이 해주면 안됌
+						ans[i][j] = min(ans[i][j], rgb[i][j] + ans[i-1][k]);  //초기화를 해준 이유
+					}
+				}
+			}
+		}
+		System.out.println(min(ans[input][R], ans[input][G], ans[input][B]));
+	}
+
+	public static int min(int a, int b) {  //EX) ans[2][1]= ans[1][2]와 ans[1][3]중에 최솟값을 rgb[2][1]값과 더한 값을 ans[2][1]에 저장
+		if (a < b)
+			return a;
+		else
+			return b;
+	}
+	public static int min(int a, int b, int c) {   //각각의 최솟값과 더한 ans[3][1] ans[3][2] ans[3][3]중에 최솟값을 찾아내기 위한 메소드
+		if (a < b) {
+			if (a < c)
+				return a;
+			else 
+				return c;
+		}
+		else {
+			if (b < c)
+				return b;
+			else
+				return c;
+		}
+	}
+}
