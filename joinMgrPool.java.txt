@@ -1,0 +1,92 @@
+package jspEx;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import db.DBConnectionMgr;
+
+public class JoinMgrPool {
+	private DBConnectionMgr pool = null; //DBConnectionMgr에 연결하는 pool객체
+	
+	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	Date now = new Date();
+	String nowDate = dateFormat.format(now);//dateFormat객체를 format(String형태로)(now)현재의("yyyy-MM-dd HH:mm:ss")출력
+	
+	public JoinMgrPool() {
+		try {
+			pool = DBConnectionMgr.getInstance(); //DBConnectionMgr에서 pool객체를 가져옴
+		}catch(Exception e) {
+			System.out.println("오류: DBConnection Pool 실패."); //pool객체를 가저오는데 실패
+		}
+	}
+	
+	public boolean idCheck(String user_id) {  //데이터베이스에 user_id값이 있다면
+		Connection con = null;     //데이터베이스에 접근
+		PreparedStatement pstmt = null;   //데이터베이스에 접근해서 값을 가저옴
+		ResultSet rs = null;      //가저온 값을 출력
+		String sql = null;        //데이터베이스에서 특정한 값을 지정하기 위한 변수 
+		
+		String id = null;          //id값
+		
+		try {
+			con = pool.getConnection();  //pool의 객체를 데이터 베이스에 연결
+			sql = "select user_id from user_mst where user_id = ?";  //DB에 있는 user_mst에서  user_id를 가져오는데 user_id = ? 우리가 원하는 값을 가져온다
+			pstmt = con.prepareStatement(sql);  //prepareStatement ?를 쓰기 위해서는 prepareStatement를 해줘야함
+			pstmt.setString(1, user_id);   //첫번째 ?에 user_id를 집어넣는다
+			rs = pstmt.executeQuery();   //데이터 베이스로 부터 가져온 값을 출력
+			if(rs.next()) {    //rs에 값이 있는 한 무한 반복
+				id = rs.getString(1);
+			}
+		}catch (Exception e) {
+			e.printStackTrace();  //에러 메세지의 발생 근원지를 찾아서 단계별로 에러를 출력한다.
+
+		}finally {
+			pool.freeConnection(con, pstmt, rs);  //사용된 pool객체를 다시 반환
+		}
+		
+		if(id != null) {   //ID가 있다면
+			return true;   //true를 반환
+		}else {
+			return false; //없다면 false를 반환
+		}
+		
+	}
+	
+	public boolean joinInsert(UserBean userBean) {  //UserBean클래스의 userBean의 객체를 joinInsert에 넣음
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			con = pool.getConnection();  //pool의 객체를 DB에 연결
+			sql = "insert into user_mst(user_id, user_pwd, user_name, user_birthday, createdate, updatedate)
+					+ "values(?, ?, ?, ?, ?, ?)"; //
+			pstmt = con.prepareStatement(sql);  //?, ?, ?, ?, ?, ?를 위해서prepareStatement
+			pstmt.setString(1, userBean.getUser_id());  // userBean.getUser_id()을 첫번째?값으로 지정
+			pstmt.setString(2, userBean.getUser_pwd());
+			pstmt.setString(3, userBean.getUser_name());
+			pstmt.setString(4, userBean.getUser_birthday());
+			pstmt.setString(5, nowDate);
+			pstmt.setString(6, nowDate);
+			pstmt.executeUpdate();  //입력받은 값으로 쿼리실행
+		}catch (Exception e) {
+			e.printStackTrace();  //에러 메세지의 발생 근원지를 찾아서 단계별로 에러를 출력한다.
+			return false;
+		}finally {
+			pool.freeConnection(con, pstmt); //pool객체를 반환
+		}
+		return true;
+		
+	}
+	
+}
+
+
+
+
+
+
+

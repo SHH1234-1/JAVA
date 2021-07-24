@@ -1,0 +1,88 @@
+package jspEx;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class JoinProc
+ */
+@WebServlet("/jspEx/joinProc")
+public class JoinProc extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPost(request, response); //doGet방식 주소창을 타고 데이터가 넘어가기 때문에 데이터를 사용자가 그대로 볼 수 있으므로 보안에 취약.
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");  //Post방식  데이터가 html header를 타고 넘어가기에 주소창에는 데이터가 보여지지 않으므로 보안에 강함
+		JoinMgrPool joinMgr = new JoinMgrPool();  //JoinMgrPol의 객체 생성 데이터베이스에 연결하는 객체
+		UserBean userBean = new UserBean();  //UserBean의 객체 생성 bean객체 생성
+		
+		String	user_id = "",   //데이터 베이스 안에 있는 값 초기화
+				user_pwd = "",
+				user_repwd = "",
+				user_name = "",
+				user_year = "",
+				user_month = "",
+				user_day = "",
+				idstatus = "",
+				submitflag = "";
+		
+		if(request.getParameter("user_id") != null){    //jsp에서 input에 입력한 user_id가 null이 아니라면 user_id라는 변수에 getParameter한다
+			user_id = request.getParameter("user_id");
+		}
+		if(request.getParameter("user_pwd") != null){
+			user_pwd = request.getParameter("user_pwd");
+		}
+		if(request.getParameter("user_repwd") != null){
+			user_repwd = request.getParameter("user_repwd");
+		}
+		if(request.getParameter("user_name") != null){
+			user_name = request.getParameter("user_name");
+		}
+		if(request.getParameter("user_year") != null){
+			user_year = request.getParameter("user_year");
+		}
+		if(request.getParameter("user_month") != null){
+			user_month = request.getParameter("user_month");
+		}
+		if(request.getParameter("user_day") != null){
+			user_day = request.getParameter("user_day");
+		}
+		if(request.getParameter("idstatus") != null){   //idstatus??
+			idstatus = request.getParameter("idstatus");
+		}
+		if(request.getParameter("submitflag") != null && request.getParameter("submitflag").equals("true")){  //??submitflag
+			submitflag = request.getParameter("submitflag");
+			
+			userBean.setUser_id(user_id);  //getParameter한 값을 userBean에다가 다 넣음
+			userBean.setUser_pwd(user_pwd);
+			userBean.setUser_name(user_name);
+			userBean.setUser_birthday(user_year + "-" + user_month + "-" + user_day);
+			
+			boolean insertStatus = joinMgr.joinInsert(userBean);  //데이터베이스에 값이 들어갔는지 아닌지를 판단
+			if(insertStatus == true){   //만일 성공적으로 값이 들어갔다면
+				response.sendRedirect("login");  //로그인 페이지로 이동
+				return;
+			}
+		}
+		
+		request.setAttribute("user_id", user_id);   //jsp에서 input으로 입력받은 값을 setAttribute로 저장
+		request.setAttribute("user_pwd", user_pwd);
+		request.setAttribute("user_repwd", user_repwd);
+		request.setAttribute("user_name", user_name);
+		request.setAttribute("user_year", user_year);
+		request.setAttribute("user_month", user_month);
+		request.setAttribute("user_day", user_day);
+		request.setAttribute("idstatus", joinMgr.idCheck(user_id));  //user_id가 있으면 true 없으면 false로 나옴
+		request.getRequestDispatcher("join.jsp").forward(request, response);
+	}
+
+}
