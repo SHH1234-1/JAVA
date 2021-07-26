@@ -1,0 +1,50 @@
+package jspEx;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+/**
+ * Servlet implementation class Login
+ */
+@WebServlet("/jspEx/login")
+public class Login extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8"); // jsp로 넘겨받은 정보들을 UTF-8로 출력
+		
+		HttpSession session = request.getSession();  //session 사용
+		
+		String user_id = request.getParameter("user_id");  //login jsp에서 input으로 입력받은 user_id를  user_id 변수에 저장
+		String user_pwd = request.getParameter("user_pwd");
+		String submitflag = request.getParameter("submitflag");
+		if(user_id == null) { ////servlet을 먼저 열었을때는 jsp에서 받아오는게 없으므로  전부null
+			user_id = "";  //null이면 ""
+		}
+		if(submitflag == null) {
+			if(session.getAttribute("userBean") != null) { ///servlet을 먼저 열었을때는 jsp에서 받아오는게 없으므로  전부null
+				response.sendRedirect("index");  //회원가입 페이지로 전환
+				return;
+			}
+			request.setAttribute("loginflag", 3);  //submitflag == null전제 즉 첫페이지에는 아무것도 없으니까 의미없는 숫자 3 아이디 비밀번호 전부 있을때 1 아이디만 있을때 0 아이디가 없을때0
+			request.setAttribute("user_id", "");   // 첫페이지에는 아이디가 입력되지 않았으므로 ""
+		}else {  //첫페이지가 아닐경우
+			LoginMgrPool loginMgrPool = new LoginMgrPool();
+			int flag = loginMgrPool.loginIdCheck(user_id, user_pwd);
+			if(flag == 1) { 
+				session.setAttribute("userBean", loginMgrPool.getUserBean(user_id)); //getUserBean메소드의 return 값이 bean이므로 그 return값을session에다가 넣는다
+				request.getRequestDispatcher("index").forward(request, response);   //로그인 성공했으니까 "index 페이지 보여주기
+				return;
+			}
+			request.setAttribute("loginflag", flag);  //로그인 실패 flag에 0이나 2  넘겨주는 장소는 jsp의 input type text 안에 넘겨준다
+			request.setAttribute("user_id", user_id);  //로그인 실패한 아이디를 넘겨준다
+		}
+		request.getRequestDispatcher("login.jsp").forward(request, response);  //로그인 실패했을때
+	}
+}

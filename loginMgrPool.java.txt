@@ -1,0 +1,95 @@
+package jspEx;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import db.DBConnectionMgr;
+
+public class LoginMgrPool {
+	private DBConnectionMgr pool = null;   //DBConnectionMgr pool 객체 생성
+	
+	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //SimpleDateFormat 날짜를 yyyy-MM-dd HH:mm:ss로 출력하기 위한 것
+	Date now = new Date(); //현재날짜를 출력 
+	String nowDate = dateFormat.format(now);  //dateFormat 객체를 format(String)형식으로 (now)현재날짜를 출력
+	
+	public LoginMgrPool() {
+		try {
+			pool = DBConnectionMgr.getInstance(); // DBConnectionMgr에서 pool 객체를 가져옴
+		}catch(Exception e) {
+			System.out.println("오류: DBConnection Pool 실패."); //DBConnectionMgr에서 pool 객체를 가져오는것의 실패
+		}
+	}
+	
+	public int loginIdCheck(String user_id, String user_pwd) {  //login jsp에서 input으로 입력받은 아이디와 비밀번호를 매개변수로 한loginIdCheck 매소드
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int flag = 2;
+		
+		try {
+			con = pool.getConnection();  //pool객체를 데이터 베이스에 연결
+			sql = "select count(*) from user_mst where user_id = ?"; //user_mst 테이블에서 user_id의 값을 가지고 있는 결과가 몇개인지를 count해서 다 가지고 온다
+			pstmt = con.prepareStatement(sql);  //?를 쓰기위해서  prepareStatement 사용
+			pstmt.setString(1, user_id); //?의 첫번째에 user_id를 넣는다
+			rs = pstmt.executeQuery();  //쿼리실행
+			if(rs.next()) { //rs에 값이 있는 한 무한 루프
+				flag = rs.getInt(1);  //첫번째있는 컬럼(user_id)를 int형으로 출력한 것을 flag변수에 넣는다 즉 user_id가 있다면 flag에는 1이 없다면 값이 없으므로 int flag = 2;가 그대로 있다는 의미 
+			}
+		}catch (Exception e) {
+			e.printStackTrace();  //오류가 발생했을 경우 오류가 발생한 경로를 보여주기
+		}finally {
+			pool.freeConnection(con, pstmt, rs);  //pool객체를 반환
+		}
+		
+		if(flag != 2) {  //아이디가 있을 경우
+			try {
+				con = pool.getConnection(); //pool 객체를 DB에 연결
+				sql = "select count(*) from user_mst where user_id = ? and user_pwd = ?"; // user_mst에서 user_id와 user_pwd가 동일했을때 그것을 count 하여 가져온다
+				pstmt = con.prepareStatement(sql);  //?를 사용하기 위한 prepareStatement
+				pstmt.setString(1, user_id); //첫번째 ?에 user_id를 넣음
+				pstmt.setString(2, user_pwd); //두번째 ?에 user_pwd를 넣음
+				rs = pstmt.executeQuery(); //쿼리 실행
+				if(rs.next()) {
+					flag = rs.getInt(1);//값이 없으면 0출력 (비밀번호가 없다는뜻) 아이디 비밀번호 둘 다 있으면 1 출력
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				pool.freeConnection(con, pstmt, rs); //pool 객체를 반환
+			}
+		}
+		return flag; //아이디가 있고 비밀번호가 있으면 1 아이디가 없으면 2 아이디는 있는데 비밀번호가 없으면 0을 반환
+	}
+	
+	public UserBean getUserBean(String user_id) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		UserBean bean = new UserBean();
+		
+		try {
+			con = pool.getConnection();
+			sql = "select * from user_mst where user_id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, user_id); //첫번째 ?에 user_id를 넣고 값을 가져옴
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				bean.setUser_id(rs.getString(1)); //입력받은 User_id를 bean에 넣어줌
+				bean.setUser_pwd(rs.getString(2));
+				bean.setUser_name(rs.getString(3));
+				bean.setUser_birthday(rs.getString(4));
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			pool.freeConnection(con, pstmt, rs); //pool 객체를 반환
+		}
+		return bean;
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------
