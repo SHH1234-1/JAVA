@@ -1,0 +1,96 @@
+package chapter1;
+
+public class DecExample1 {
+	  public static void main(String args[]) {
+	        int n = 10;
+	        for(int i=0; i<n; i++) { //행의 개수
+	            for(int j=0; j<i+1; j++) //열에 들어갈 내용
+	                System.out.print("#");
+	            System.out.println();
+	        }
+	        System.out.println();
+	        
+	        for(int i=0; i<n; i++) { //행의 개수
+	            for(int j=0; j<n-i; j++) // 열에 들어갈 내용
+	                System.out.print("#");
+	            System.out.println();
+	        }
+	        System.out.println();
+	        
+	        for(int i=0; i<n; i++) { //행의 개수
+	            for(int j=0; j<n-i-1; j++) //열에 들어갈 공백의 내용
+	            	System.out.print(" ");
+	            
+	            for(int j=0; j<i+1; j++)  //열에 들어갈 #의 내용
+	            	System.out.print("#");
+	            System.out.println();
+            }
+	        System.out.println();
+	        
+	        for(int i=0; i<n; i++) { //행의 개수
+	        	 for(int j=0; j<i;j++) //열에 들어갈 내용
+	        		 System.out.print(" ");
+	        	 
+	        	 for(int j=0; j < n-i; j++)   //열에 들어갈 내용
+		                System.out.print("#");
+		            System.out.println();  
+	        }
+	        
+	        System.out.println();
+	            
+	        
+	      
+	        
+   }
+	        
+}
+
+
+/* 출력형태
+#
+##
+###
+####
+#####
+######
+#######
+########
+#########
+##########
+
+##########
+#########
+########
+#######
+######
+#####
+####
+###
+##
+#
+
+         #
+        ##
+       ###
+      ####
+     #####
+    ######
+   #######
+  ########
+ #########
+##########
+
+##########
+ #########
+  ########
+   #######
+    ######
+     #####
+      ####
+       ###
+        ##
+         #
+
+
+
+*/
