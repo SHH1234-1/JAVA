@@ -1,0 +1,67 @@
+import java.util.Scanner;
+
+import java.util.Stack;
+
+ 
+
+public class Main {
+
+ 
+
+	public static void main(String[] args) {
+
+		// TODO Auto-generated method stub
+
+ 
+
+		Scanner sc = new Scanner(System.in);   //테스트 케이스의 개수 (입력받을 문장의 개수)
+
+ 
+
+		int testCase = sc.nextInt(); 
+
+		sc.nextLine(); // 개행오류 방지 nextInt();에서 입력받고 엔터를 누를 경우 Enter는 buffer에 저장된다 그리고 그 후 바로 nextLine();로 문자열을 입력하고 Enter를 입력받을 경우 문자열이 입력되는 것이 아닌 Buffer에 들어있는 enter가 출력이 되는데 이를 개행 오류라고 한다 이 개행오류를 방지하기 위해서 바로 변수를 써서 nextline();을 받는 것이 아닌 sc.nextLine();를 해줘서 butter안에 들어있는 Enter를 밖으로 빼서 개행 오류를 방지한다  
+
+ 
+
+		for (int i = 0; i < testCase; i++) {   //입력받을 문장까지 반복
+
+			Stack stack = new Stack<>();  //Stack 선언
+
+			String s = sc.nextLine();  // 문장 입력
+
+			for (int j = 0; j < s.length(); j++) {   //문장의 길이만큼 반복
+
+				if (s.charAt(j) == ' ') {   //입력받은 문자가 공백이라면
+
+					while (!stack.empty()) {  //입력받은 문자가 공백이라면
+
+						System.out.print(stack.pop()); //최근에 추가된 순서대로 출력 (단어마다 반대로 출력)
+
+					}
+
+					System.out.print(" ");  //단어를 pop으로 뒤바꿔 줄때마다 띄워쓰기
+
+				} else {
+
+					stack.add(s.charAt(j));  //입력받은 문자가 공백이 아니라면 stack에 저장
+
+				}
+
+			}
+
+			while(!stack.empty()) { //마지막 단어는 공백이 들어가는 것이 아니라 Enter가 들어가므로 한번더 
+
+				System.out.print(stack.pop());  //stack.pop()해서 빼줄것
+
+			}
+
+			System.out.println();
+
+ 
+
+		}
+
+	}
+
+}
