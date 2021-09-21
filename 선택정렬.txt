@@ -1,0 +1,31 @@
+package chapter1;
+
+public class homework6 {
+
+	public static void main(String[] args) {
+		int data[] = new int[5];
+		
+		for(int i=0; i<data.length; i++)
+		    data[i]=(int)(Math.random()*100);  //5개의 랜덤한 숫자가 차례차례 배열안에 들어간다
+		for(int i=0; i<data.length; i++)
+		    System.out.print(data[i]+ " ");  //5개의 랜덤한 숫자를 출력
+				System.out.println();  //줄바꿈
+				
+		for(int i=0; i<data.length; i++) {  //비교할 수의 개수
+			for(int j=i+1;j<data.length; j++) { //가장 작은 값을 찾기 위한 for문
+				if(data[i] > data[j]) {			//i 의 값이 j 보다 크면
+					int tmp = data[i];  //i를 임시 변수 tmp에 넣고
+					data[i] = data[j];  //j를 i에 넣고
+					data[j] = tmp;		//임시변수안에 들어있던 i를 j에 넣는다
+					
+				}
+			}
+		}		
+		
+		for(int i=0;i<data.length;i++) {
+		System.out.print(data[i] + " ");  //변수 출력
+		}
+
+	}
+
+}
