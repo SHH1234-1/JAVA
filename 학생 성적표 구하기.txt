@@ -1,0 +1,51 @@
+package chapter1;
+
+import java.util.Scanner;
+
+public class homework7 {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		System.out.print("학생수를 입력하시오");
+		int n = sc.nextInt();
+		int data[][] = new int[n][5];  //"학생번호","국어성적","수학성적","영어성적","과학성적","총점" 을 받으므로 [][5]
+		
+		String[] name = {"학생번호","국어성적","수학성적","영어성적","과학성적","총점"};
+		for(String nn:name) {
+			System.out.print(nn + "\t");
+		}
+		System.out.println();
+		
+		for(int i=0;i<44;i++) {
+			System.out.print("=");
+		}
+		System.out.println();
+		
+		for(int i=0; i<n;i++) {
+			data[i][0]=i; //학생번호
+			data[i][1]=(int)(Math.random()*100);  //국어성적
+			data[i][2]=(int)(Math.random()*100);  //수학성적
+			data[i][3]=(int)(Math.random()*100);  //영어성적
+			data[i][4]=(int)(Math.random()*100);  //과학성적
+			
+		}
+		
+		for(int i=0;i<data.length;i++) {  //학생 수만큼 data.length를 받음
+				for(int j=0;j<data[i].length;j++) {  //data[i].length 과목수+ 총점 란까지 반복
+					System.out.print(data[i][j]+"\t"); //번호에 해당하는 학생의 국어 수학 영어 과학 성적
+		}
+	
+	int sum = 0;
+	for(int j=0; j<data[i].length; j++) { //합계
+		sum+=data[i][j];
+	}
+		System.out.print(sum+"\t");
+		System.out.println();
+	}
+	
+	
+}
+	
+}
+
+
