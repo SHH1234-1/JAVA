@@ -1,0 +1,73 @@
+
+
+//https://www.acmicpc.net/problem/1406 문제
+
+package Baekjoon;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Stack;
+
+public class Main {
+
+	public static void main(String[] args) throws IOException {
+	BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); //문자열 명령 개수 명령어 입력
+	BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out)); //출력
+	
+	
+	String str = br.readLine(); //첫줄 EX)abcd 문자열을 받음 입력한 것중 첫줄을 받아 str에 저장
+	int M = Integer.parseInt(br.readLine()); // 두번째 줄(명령어의 개수)를 입력받아서 M에 저장
+	
+	Stack<String> leftSt = new Stack<String>();
+	Stack<String> rightSt = new Stack<String>();
+	
+	String[] arr = str.split(""); //처음에 입력했던 문자열 abcd를 하나씩 잘라서 arr 배열에 넣어줌 String[] arr = {a,b,c,d};
+	for(String s : arr) {
+		leftSt.push(s); // 처음 커서는 문장 맨 뒤에서 시작하므로 왼쪽 스택에 초기 문자를 다 넣어줌
+	}
+	
+	for(int i = 0; i<M;i++) {  //명령문의 개수만큼  반복
+		String command = br.readLine(); //PX L PY를 인식
+		char c = command.charAt(0); // StringTokenizer st = new StringTokenizer(reader.readLine());
+									//String c = st.nextToken();
+		switch(c) {
+		case 'L':
+			if(!leftSt.isEmpty())
+				rightSt.push(leftSt.pop());  //커서를 왼쪽으로 옮김
+
+			break;
+		case 'D':
+			if(!rightSt.isEmpty())
+				leftSt.push(rightSt.pop());  //커서를 오른쪽으로 옮김
+
+			break;
+		case 'B':
+			if(!leftSt.isEmpty()) {    
+				leftSt.pop();  //커서를 기준으로 문자를 삭제
+			}
+			break;
+		case 'P':
+			char t = command.charAt(2);  
+			leftSt.push(String.valueOf(t));// 커서를 기준으로 왼쪽에 값 추가
+			//leftSt.push(st.nextToken());
+
+			break;
+		default:
+			break;
+		}
+	}
+	while(!leftSt.isEmpty())
+		rightSt.push(leftSt.pop());
+	
+	while(!rightSt.isEmpty())
+		bw.write(rightSt.pop());
+	
+	bw.flush();
+	bw.close(); 
+	}
+	}
+
+
