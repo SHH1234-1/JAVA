@@ -1,0 +1,41 @@
+package Baekjoon;
+//https://www.acmicpc.net/problem/10799 문제
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Stack;
+ 
+public class Number10799 {
+    public static void main(String[] args) throws NumberFormatException, IOException {
+        // TODO Auto-generated method stub
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        String input = bf.readLine();
+        Stack<Character> stack = new Stack<>();
+ 
+        int result = 0; //쇠막대기의 개수
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) == '(') { // 열린 괄호면 스택에 추가
+                stack.push('(');
+                continue;
+            }
+            if (input.charAt(i) == ')') { // 닫힌 괄호일 경우,
+                stack.pop(); // 일단 stack에서 pop을 실행.
+ 
+                if (input.charAt(i - 1) == '(') { // 그 전 괄호가 열린 괄호면 레이저를 의미.
+                    result += stack.size(); // 레이저를 쏘고 나서 stack에 들어있는 size가 토막난 쇠막대기의 개수와 같으므로 stack.size()를 result값에 넣어줌
+                } else { // 그 전 괄호가 닫힌 괄호면 레이저가 아니므로
+                    result++; // 단순히 1을 더해 줌. ))가 연속으로 나올경우에는 단순히 쇠막대기의 개수가 1증가하기 때문에
+                }
+            }
+        }
+ 
+        bw.write(result + "\n"); //쇠막대기의 개수를 출력
+        bw.flush();
+        bf.close();
+        bw.close();
+    }
+ 
+}
