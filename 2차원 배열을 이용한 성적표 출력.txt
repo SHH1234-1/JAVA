@@ -1,0 +1,67 @@
+package chapter1;
+
+import java.util.Scanner;
+
+public class homework7 {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		System.out.print("학생수를 입력하시오");
+		int n = sc.nextInt();
+		int data[][] = new int[n][5];  //"학생번호","국어성적","수학성적","영어성적","과학성적","총점" 을 받으므로 [][5]
+		
+		String[] name = {"학생번호","국어성적","수학성적","영어성적","과학성적","총점"};
+		for(String nn:name) {
+			System.out.print(nn + "\t");
+		}
+		System.out.println();
+		
+		for(int i=0;i<80;i++) {
+			System.out.print("=");
+		}
+		System.out.println();
+		
+		for(int i=0; i<n;i++) {
+			data[i][0]=i; //학생번호
+			data[i][1]=(int)(Math.random()*100);  //국어성적
+			data[i][2]=(int)(Math.random()*100);  //수학성적
+			data[i][3]=(int)(Math.random()*100);  //영어성적
+			data[i][4]=(int)(Math.random()*100);  //과학성적
+			
+		}
+		
+		for(int i=0;i<data.length;i++) {  //학생 수만큼 data.length를 받음 
+			System.out.print(data[i]+"\t");  //학생번호 출력
+				for(int j=0;j<data[i].length;j++) {  //data[i].length 국어 수학 영어 과학까지 반복하고?? 여기서 data[i].length; 쓰는 이유???
+					System.out.print(data[i][j]+"\t"); //번호에 해당하는 학생의 국어 수학 영어 과학 성적
+		}
+	
+	int sum = 0;
+	for(int j=0; j<data[i].length; j++) { //남은 합계 항목을 여기다가 반복? 여기서 data[i].length; 쓰는 이유???
+		sum+=data[i][j];
+	}
+		System.out.print(sum+"\t");
+		System.out.println();
+	}
+
+	
+	
+}
+	
+}
+
+
+학생수를 입력하시오10
+학생번호	국어성적	수학성적	영어성적	과학성적	총점	
+================================================================================
+[I@28d93b30	0	75	83	19	8	185	
+[I@1b6d3586	1	52	5	19	7	84	
+[I@4554617c	2	88	94	91	96	371	
+[I@74a14482	3	25	37	11	14	90	
+[I@1540e19d	4	32	49	61	47	193	
+[I@677327b6	5	28	88	45	79	245	
+[I@14ae5a5	6	40	94	41	36	217	
+[I@7f31245a	7	76	19	88	68	258	
+[I@6d6f6e28	8	57	65	32	43	205	
+[I@135fbaa4	9	85	58	78	66	296	
+출력형태에 이렇게 나옴 ??
