@@ -1,0 +1,32 @@
+package Baekjoon;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+//https://www.acmicpc.net/problem/10808
+
+public class Number10808 {
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		StringBuilder sb = new StringBuilder();
+		
+		String input = br.readLine();
+		
+		int[] count = new int[26]; //a~z까지 수가 몇번나왔는지를 세는 count 배열 
+		
+		for(int i=0; i<input.length();i++) {
+			count[(int)input.charAt(i)-97] +=1; //아스키 코드를 이용하여 알파벳 순서대로 index를 만들어주고 count에 넣어줌 EX) a 0 b 1 c 2 ~~
+		}
+		
+		for(int i =0;i<count.length; i++) {  //출력형태를 숫자 " " 숫자형태로 만들어주기 위해서 쓰는 for 문
+			sb.append(count[i]);
+			sb.append(" ");
+		}
+
+		System.out.println(sb);
+	}
+
+}
