@@ -1,0 +1,55 @@
+package Baekjoon;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Stack;
+//https://www.acmicpc.net/problem/1918 문제
+public class Number1918 {
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();  //알파벳을 담을  StringBuilder 생성
+		Stack<Character> stack = new Stack<>();
+		
+		String line  = br.readLine();
+		
+		for(int i=0;i<line.length(); i++) {
+			int code = (int)line.charAt(i);  //알파벳을 아스키 코드로 변환
+			
+			if(code>=65 && code <=90) {  //code가 65 이상 90이하 즉 알파벳일 경우
+				sb.append(line.charAt(i)); //알파벳만 걸러서 sb에 저장
+			}else if(line.charAt(i)== '*' || line.charAt(i)=='/') {
+				while(!stack.empty() && (stack.peek() == '*' || stack.peek() =='/')){ //()가 없으면 곱하기와 나누기가 우선 연산자 이므로
+					sb.append(stack.pop()); //stack에 들어있는 * / 연산자를 sb에 저장
+				}
+				
+				stack.push(line.charAt(i)); // 위 조건에 부합하지 않는 연산자는 차례대로 stack에 저장함 (스택이 비어있다는 뜻)여기 push를 한다는건
+			}else if(line.charAt(i) == '+' || line.charAt(i)== '-') {  // +-가 입력받았을 경우
+				while(!stack.empty() && (stack.peek()=='*' || stack.peek() == '/' || stack.peek() == '+'|| stack.peek() =='-')) {
+					sb.append(stack.pop()); // 그냥 입력받은 순으로 곱하기 나누기 덧셈 뺄셈을 출력해줌
+				}
+				
+				stack.push(line.charAt(i)); //아니면 stack에 연산자 저장
+			} else if(line.charAt(i) == '(') {
+				stack.push(line.charAt(i)); // (가 입력받는 경우 stack에 (넣고
+			} else if(line.charAt(i)== ')') {
+				while(stack.peek() !='(') { //( ) 두 ()사이에 연산자가 있을 경우
+					sb.append(stack.pop()); // 그 연산자를 우선적으로 sb에 넣어줌 
+				}
+				
+				stack.pop();  //'(' 도 없애줌
+			}
+			}
+		
+			while(!stack.empty()) {  // 만일()가 있을경우 ()안에 있는 연산자만 sb에 들어가므로 ()안에 있는 연산자를 제외한 나머지 연산자를 다 빼서 sb에 넣어줌
+				sb.append(stack.pop());
+			}
+			
+			
+			System.out.println(sb.toString()); // 출력
+		}
+
+	}
+
+
