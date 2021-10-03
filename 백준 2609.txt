@@ -1,0 +1,35 @@
+package Baekjoon;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+import java.util.StringTokenizer;
+
+//https://www.acmicpc.net/problem/2609 문제
+
+public class Number2609 {
+	
+
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine(), " "); //" "=공백을 기준으로 토큰을 자름
+		
+		int number1 = Integer.parseInt(st.nextToken());  //첫번째로 입력한수를 Integer형태로 int number1에 넣어줌
+		int number2 = Integer.parseInt(st.nextToken());  //두번째로 입력한 수를 Integer형태로 변환후 number2에 넣어줌
+		int result1 = gcd(number1, number2);  //최대공약수
+		
+		System.out.println(result1);
+		System.out.println(number1 * number2 / result1);
+		
+		
+		
+	}
+	
+	public static int gcd(int number1, int number2) { //최대 공약수
+		if(number2 == 0) return number1;
+		return gcd(number2, number1 % number2);
+	}
+
+}
