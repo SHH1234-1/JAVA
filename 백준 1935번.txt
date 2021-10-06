@@ -1,0 +1,48 @@
+package Baekjoon;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Stack;
+import java.io.IOException;
+//https://www.acmicpc.net/problem/1935 문제
+public class Number1935 {
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		int n = Integer.parseInt(br.readLine());
+		double[] operand = new double[n];  //입력된 피연산자의 개수만큼 배열의 크기를 만듬
+		char[] inputVal = br.readLine().toCharArray();  // 알파벳+연산자(후위 표위식을 잘라서 저장)
+		Stack<Double> stack = new Stack<>();
+		for(int i=0;i<n; i++) {
+			operand[i] = Integer.parseInt(br.readLine()); // 피연산자에 대응하는 값을 operand[i] 배열에 입력
+		}
+		for(int i=0;i<inputVal.length; i++) {
+			if(Character.isAlphabetic(inputVal[i])) {  //만일 알파벳이라면
+				int index = (int)inputVal[i]-65;
+				stack.push(operand[index]); //그 알파벳에 해당하는 피연산자에 대응하는 값을 stack에 넣음
+			}else {  //만일 연산자라면
+				Double result = 0.d;
+				Double pop1 = stack.pop(); // 스텍에 있는 값을 2개 빼고
+				Double pop2 = stack.pop();  
+				if(inputVal[i]=='+') {
+					result = pop2 + pop1;
+				}
+				if(inputVal[i]=='-') {
+					result = pop2 + pop1;
+				}
+				if(inputVal[i]=='*') {
+					result = pop2 + pop1;
+				}
+				if(inputVal[i]=='/') {
+					result = pop2 + pop1;
+				}
+				stack.push(result); //스텍에 들어있는 두 값의 연산후에 나오는 결과갚을 다시 stack에 넣어준다
+			}
+		}
+		System.out.format("%.2f", stack.pop());
+		
+		
+	}
+
+}
