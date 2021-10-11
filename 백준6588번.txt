@@ -1,0 +1,43 @@
+package Baekjoon;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+//https://www.acmicpc.net/problem/6588 문제
+public class Number6588 {
+		public static final int MAX = 100000;
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		Scanner sc = new Scanner(System.in);
+		
+		boolean[] isPrime = new boolean[MAX+1];
+		for(int i =2; i<=MAX;i++) { //임시적으로 모든수를 소수라고 지정
+			isPrime[i] = true;
+		}
+		for(int i =2 ;i<= MAX;i++) {
+			for(int j=i*2;j<=MAX;j+=i) {
+				if(!isPrime[j]) continue;
+				isPrime[j] = false;  //소수가 아니라면 false로 둠
+			}
+		}
+		
+		while(true) {
+			int n = sc.nextInt();
+			boolean ok = false;
+			if(n == 0) //0을 입력했을떄 while문 종료
+				break;
+			for(int i = 2; i<=n/2;i++) {
+				if(isPrime[i] && isPrime[n-i]) { //두 조건이 true라면 즉 두 수가 모두 소수라면
+					System.out.println(n+"="+ i + "+" + (n-i));
+					ok = true;
+					break;
+				}
+			}
+			if(!ok)
+				System.out.println("Goldbach's conjecture is wrong");
+		}
+		
+		
+	}
+
+}
