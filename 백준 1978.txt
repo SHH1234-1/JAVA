@@ -1,0 +1,33 @@
+package Baekjoon;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
+public class Number1978 {
+//https://www.acmicpc.net/problem/1978 문제
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt(); //수의 개수
+		int cnt = 0; //소수카운트
+		
+		for(int i=0 ;i<n;i++) { //입력한 수의 개수만큼 반복
+			int k = sc.nextInt();
+			boolean isPrime = true; // 입력한 수를 일단 전부 true 처리해둠
+			
+			if(k == 1) //1은 소수가 아니므로 
+				continue; //continue해서 for문을 그대로 빠저나가게 해줌
+			for(int j = 2; j<=Math.sqrt(k); j++) {
+				if(k % j== 0) {
+					isPrime = false;
+				}
+			}
+			if(isPrime) { //isPrime이 true라면 즉 소수라면
+				cnt++;  //소수의 개수를 count해줌
+			}
+		}
+		System.out.println(cnt);
+	}
+
+}
