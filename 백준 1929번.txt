@@ -1,0 +1,51 @@
+package Baekjoon;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.StringTokenizer;
+
+public class Number1929 {
+
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int M = Integer.parseInt(st.nextToken());
+		int N = Integer.parseInt(st.nextToken());
+		ArrayList<Boolean> primeList = new ArrayList<Boolean>(N + 1);
+		
+		primeList.add(false); // 0은 소수가 아님
+		primeList.add(false);  //1은 소수가 아님
+
+		for(int i=2;i<=N;i++) {  //일단 0과 1을 제외한 나머지 수는 전부 소수라고 가정하고
+			primeList.add(i,true);
+		}
+		
+		for(int i = 2;(i*i)<=N;i++) { //소수가 되지 않은 수를 전부 걸러내서 true를 false로 바꿔줌
+			if(primeList.get(i)) {
+				for(int j= i * i;j<=N;j+=i) {
+					primeList.set(j, false);
+				}
+			}
+			
+			for(int i1 = M; i1 <=N ;i1++) { 
+				if(primeList.get(i1)) { //true라면 출력 즉 소수만 출력
+					bw.write(i1+"\n");
+				}
+			}
+			bw.flush();
+			br.close();
+			bw.close();
+		}
+		
+		
+		
+	}
+
+}
