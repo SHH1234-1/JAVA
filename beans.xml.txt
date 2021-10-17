@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	
+	<bean id="helloSpring" class="chapter1.HelloSpring">
+		<property name="message" value="Hello_Java!"></property>
+	</bean>
+	
+	<bean id="battery1" class="chapter2.Battery"> // chapter2.Battery클래스에 battery1이라고 하는 객체 생성
+		<constructor-arg name="batteryName" value="생성자로 만든 배터리1"></constructor-arg> //batteryName 생성자에 매개변수로 생성자로 만든 배터리1"를 넣는다
+	</bean>
+	
+	<bean id="battery2" class="chapter2.Battery"> // chapter2.Battery클래스에 battery2이라고 하는 객체 생성
+		<property name="batteryName" value="세터로 만든 배터리2"></property>  //<property name="batteryName" = setbatteryName 에 매개변수로 세터로 만든 배터리2"를 넣는다
+	</bean>
+	
+	<bean id="blackPhone" class="chapter2.BlackPhone">
+		<!-- <constructor-arg ref="battery2"></constructor-arg> --> //생성자에 battery2를 넣는다
+		<property name="battery" ref="battery1"></property>  //property name="battery" = setBattery에 매개변수로 battery1를 넣어줌
+	</bean>
+	
+</beans>
