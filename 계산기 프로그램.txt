@@ -1,0 +1,49 @@
+public class Homework11 {
+public static void main(String[] args) {
+try{
+System.out.println(calcultation(Integer.parseInt(args[0]),args[1].charAt(0),Integer.parseInt(args[2]),args[3].charAt(0),Integer.parseInt(args[4]))); //Integer.parseInt(args[0]) 숫자 args[1].charAt(0) 부호1 Integer.parseInt(args[2]) 숫자2 args[3].charAt(0) 부호2  ,Integer.parseInt(args[4]) 숫자3
+}
+catch(Exception e){
+System.out.println(calculation(Integer.parseInt(args[0]),args[1].charAt(0),Integer.parseInt(args[2])));
+}
+}
+static double calcultation(int num1,char operator1,int num2,char operator2,int num3) {  // 숫자 부호1 숫자2 부호2 숫자3를 매개변수로 하는 매소드
+double result1=0,result2=0;
+result1=calculation(num1,operator1,num2);  //첫번째 계산 result1 = 첫번째 계산의 결과 값
+switch(operator2){
+case '+':
+result2=result1+num2;
+break;
+case '-':
+result2=result1-num2;
+break;
+case '#':
+result2=result1*num2;
+break;
+case '/':
+result2=result1/(double)num2;
+break;
+}
+return result2;
+}
+static double calculation(int num1,char operator,int num2){ // 숫자 부호1 숫자2를 매개변수로
+double result=0;  //result값 변수 초기화
+switch(operator){
+case '+':
+result=num1+num2;
+break;
+case '-':
+result=num1-num2;
+break;
+case '#':
+result=num1*num2;
+break;
+case '/':
+result=num1/(double)num2;
+break;
+}
+return result;
+}
+}
+
+
