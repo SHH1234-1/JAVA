@@ -1,0 +1,30 @@
+package Baekjoon;
+
+import java.util.Scanner;
+
+public class Number2089 {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		StringBuilder sb = new StringBuilder();
+		
+		int input = sc.nextInt();  //첫줄에 10진법의 수 N이 주어진다
+		
+		if(input == 0) {  //입력된 수가 0이라면
+			System.out.println(0);  //그대로 0 출력
+		} else {
+			while(input !=1) {
+				sb.append(Math.abs(input %-2)); //Math.abs 절대값을 나타내는 메소드
+				input =(int)Math.ceil((double) input / (-2));  //Math.ceil올림을 나타내는 메소드
+			}
+			
+			sb.append(input);
+			
+			System.out.println(sb.reverse());
+		}
+		
+		
+
+	}
+
+}
