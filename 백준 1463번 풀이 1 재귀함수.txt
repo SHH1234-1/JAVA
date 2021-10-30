@@ -1,0 +1,42 @@
+package Baekjoon;
+//https://www.acmicpc.net/problem/1463 문제
+import java.util.Scanner;
+
+public class Number1463 {
+	
+	public static int min = 99999999;
+
+	public static void doFunc(int num, int way, int cnt) { //num은 입력받은 수 way(계산 가능한 방법 나누기 3 나누기2 -1) cnt 계산 횟수
+		
+		if (way == 3 && num % 3 == 0) {
+			cnt++;
+			num /= way;
+			for (int i = 1; i <= 3; i++)  //여기서 다시 for문을 돌리는 이유 계산할 수 있는 모든 경우의 수를 구하기 위해서
+				doFunc(num, way, cnt);
+		} else if (way == 2 && num % 2 == 0) {
+			cnt++;
+			num /= way;
+			for (int i = 1; i <= 3; i++)
+				doFunc(num, way, cnt);
+		} else if (num >= 2){
+			cnt++;
+			num -= 1;
+			for (int i = 1; i <= 3; i++)
+				doFunc(num, way, cnt);
+		}
+		
+		if (num == 1 && cnt < min) { //min변수를 두고 cnt와 비교하는 이유 min모든 계산횟수가 가능한 경우의 수를 구한 다음에 계산횟수를 비교해가며 가장 계산을 적게 하는 횟수를 min에다가 넣고 return시킴
+			min = cnt;
+			return;
+		}
+	}
+	
+	public static void main(String[] args) {
+		int n;
+		Scanner sc = new Scanner(System.in);  //수를 입력받고
+		n = sc.nextInt();
+		for (int i = 1; i <=3; i++)
+			doFunc(n, i, 0); //재귀함수 실행
+		System.out.println(min);
+	}
+}
