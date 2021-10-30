@@ -1,0 +1,23 @@
+package Baekjoon;
+
+import java.util.Scanner;
+//https://www.acmicpc.net/problem/11653 문제
+public class Number11653 {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		int N = sc.nextInt(); //첫째줄 정수를 입력받음
+		int i = 2;  //가장 먼저 작은 수인 2부터 소인수 분해를 시작함
+		while(N>=i) { //나눌 수와 같거나 나눌 수보다 클떄까지
+			if(N%i == 0) { //나누어 떨어지면
+				System.out.println(i); //그대로 출력
+				N/=i; //나누고 난 수의 몫을 다시 N으로 설정해줌
+			} else {
+				i++; // 나누어 떨어지지 않으면 i를 늘려주고 다시 계산
+			}
+		}
+
+	}
+
+}
