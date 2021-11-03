@@ -1,0 +1,26 @@
+package Baekjoon;
+
+import java.util.Scanner;
+
+public class Number11052 {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt(); //구매하려고 하는 카드의 개수
+		int dp [] = new int[n+1]; //구매하려고 하는 금액의 최대값을 담는 배열 dp
+		int p [] = new int[n+1]; //각 카드팩의 가격
+		
+		for(int i = 1;i<n+1;i++) {
+			p[i] = sc.nextInt(); //각 카드팩의 가격을 입력받음
+		}
+		
+		for(int i=1;i<n+1;i++) {  //i 카드의 총 구매개수
+			for(int j=1;j<=i;j++) { //  카드 j개가 들어 있는 카드팩
+			dp[i] = Math.max(dp[i], p[j] + dp[i-j]); // 카드를 살때의 가격의 경우의 수를 모두 구하고 나서 그것을 비교 하고 가장 지불하는 금액의 최대값(가장 비싸게 사를는 경우)를  dp[]배열에 넣고
+			}
+		}
+		System.out.println(dp[n]);
+
+	}
+
+}
