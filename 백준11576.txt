@@ -1,0 +1,44 @@
+package Baekjoon;
+
+import java.util.Scanner;
+import java.util.Stack;
+
+public class Number11576 {
+
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		Stack<Integer> result = new Stack<>();
+		
+		int A = sc.nextInt(); //미래세계에서 사용하는 진법 A
+		int B = sc.nextInt(); //정의가 사용하는 진법B
+		
+		int aLength = sc.nextInt(); // 진법 A로 나타낸 숫자의 개수
+		
+		int demical = 0;
+		for(int i =aLength-1;i>=0;i--) { //앞에 있는 수가 높은 자릿수 이므로 
+			int number = sc.nextInt();  //A진법을 이루고 있는 숫자 입력
+			int muti = (int)Math.pow(A, i);
+			demical += (number * muti);  //수를 구함
+		}
+		
+		while(demical !=0) {  //A진법에서 나온 수를 B진법으로 변환
+			result.push(demical % B);
+			demical = demical/B;
+		}
+		
+		
+		for(int i =0;i<result.size();i++) {
+			if(result.size() - 1 == 0) {
+				System.out.print(result.pop());
+			}else {
+				System.out.print(result.pop() + " ");
+			}
+		}
+		
+		
+
+	}
+
+}
