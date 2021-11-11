@@ -1,0 +1,32 @@
+package chapter1;
+
+import java.util.Scanner;
+
+public class Number2745 {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		String n = sc.next();  //수
+		int b = sc.nextInt();  //진법수
+		
+		long result = 0; //10진법으로 바꿨을때의 결과값
+		int idx = 0; //제곱근 승 0 1 2 3.....
+		int num = 0; //각 자리의 10진수 숫자
+		
+		for (int i = n.length()-1; i>=0;i--) { //진법은 오른쪽에서 시작하므로 입력받은 문자열의 가장 오른쪽부터 진행
+			char c = n.charAt(i); // n.length()-1에서 -1을 해준이유 n.charAt(i)을 쓰기 위해서
+			if (c>='0' && c<='9') { //입력받은 수가 0~9진법 사이라면
+				num = c - '0';  //0~9사이는 그대로 출력 (문자-문자)는 int형이 됨
+			}else {
+				num = c - 55; //A~Z는 숫자로 변경
+			}
+			result += num*Math.pow(b, idx++);
+			
+		}
+		System.out.println(result);
+		
+
+	}
+
+}
