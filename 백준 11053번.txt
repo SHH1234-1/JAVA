@@ -1,0 +1,43 @@
+package Baekjoon;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Number11053 {
+
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		int n = Integer.parseInt(br.readLine()); //첫째 줄에는 수열의크기
+		int arr[] = new int[n]; //수열의 크기만큼 배열을 만듬
+		int d[] = new int[n];   //수열의 크기만큼 배열을 만듬
+		
+		StringTokenizer st = new StringTokenizer(br.readLine()); //둘째 줄에는 수열A를 이루고 있는 Ai
+		
+		for(int i=0; i<n; i++) {
+			arr[i]= Integer.parseInt(st.nextToken()); //자른 토큰을 for문을 통해 arr배열안에 넣는다
+		}
+		
+		d[0] = 1; //d의 첫번째 값은 1
+		
+		for(int i=1; i<n;i++) {
+			d[i] = 1;
+			for(int j = 0; j < i; j++) {
+				if(arr[j]<arr[i] && d[i]<=d[j]) {
+					d[i] = d[j] + 1;
+				}
+			}
+		}
+		
+		int max = 0;
+		for(int i : d) {
+			max = Math.max(max, i);
+		}
+		
+		System.out.println(max);
+
+	}
+
+}
