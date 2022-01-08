@@ -1,0 +1,49 @@
+//문제 :  https://www.acmicpc.net/problem/1874
+
+package homework;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.Stack;
+
+public class Main {
+
+	public static void main(String[] args) {
+			Scanner sc = new Scanner(System.in);
+			
+			Stack st = new Stack();  //스택선언
+			ArrayList arl = new ArrayList(); // +,-를 넣을 ArrayList
+			int index = 0;  //수열
+			
+			System.out.println("몇개의 수를 입력받으시겠습니까?");
+			int n = sc.nextInt();
+			System.out.println("숫자를 입력해 주십시오");
+			int[] arr = new int[n];  //몇개의 수를 입력받을 것인가에 대한 배열 선언
+			
+			for(int i = 0; i < n; i++) {
+				arr[i] = sc.nextInt();  //숫자 입력
+			}
+			for(int i = 1; i<=n; i++) {  //스택에 push 하는 최솟값  i = 1  st.push(i)stack에 값을 넣고 push 하는 횟수i<=n
+				st.push(i); 
+				arl.add('+'); // st에 i값이 들어가고 arr에 + 값이 add
+				while(!st.isEmpty() && arr[index]==(int)st.peek()) { //!st.isEmpty()st가 비어있지 않고 만일 arr[index]의와 (int)st.peek() 가장 마지막에 입력한 숫자가 같으면
+					index++;//새로운 수열을 만들고
+					st.pop(); //배열과 같은 수의 stack를 삭제시키고  
+					arl.add('-');//ArrayList에 -추가
+					
+				}
+			}
+			if(!st.isEmpty()) {  //수열이 완성되지 않았을 경우
+				System.out.println("NO");  //NO출력
+			}else {
+				for(int i = 0;i < arl.size();i++) { //
+					System.out.println(arl.get(i));
+				}
+			}
+				
+			
+			}
+
+	}
+
+
