@@ -1,0 +1,56 @@
+package Baekjoon;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+//https://www.acmicpc.net/problem/2004 문제
+public class Number2004 {
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+		
+		long n = Long.parseLong(st.nextToken());
+		long k = Long.parseLong(st.nextToken());
+		
+		long five = 0;
+		long two = 0;
+		
+		five = fiveCount(n);  //n!
+		two = twoCount(n);	 //n!
+		
+		five -= fiveCount(n-k); //n!-(n-k)!
+		five -= fiveCount(k);   //n!-k!
+		
+		two-= twoCount(n-k); //n!-(n-k)!
+		two-= twoCount(k);	//n!-k!
+		
+		System.out.println(five<= two? five: two); //최솟값으로 출력
+
+	}
+
+	public static long fiveCount(long n) {  // 5의 개수 세기
+		long cnt = 0;
+		
+		for(long i =5;i<=n;i*=5) {
+			cnt +=n/i;
+		}
+		
+		return cnt;
+		
+	}
+	
+public static long twoCount(long n) {  //2의 개수 세기
+		long cnt = 0;
+		
+		for(long i =2; i<=n; i*=2) {
+			cnt +=n/i;
+		}
+		
+		return cnt;
+	
+	
+}
+}
