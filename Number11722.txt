@@ -1,0 +1,37 @@
+package Baekjoon;
+import java.util.Scanner;
+
+public class Numbr11722  {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();   //수열의 길이
+        int arr[] = new int[n + 1];
+        int d[] = new int[n + 1];
+
+        for (int i = 1; i <= n; i++)
+            arr[i] = sc.nextInt();  // 수열의 각각 값을 입력
+
+        d[1] = 1;  //첫번째 수열의 개수는 1로 초기화를 시켜줌
+
+        for (int i = 2; i <= n; i++) {
+            d[i] = 1; //기본적으로 모든 자리 값의 수열은 1씩 가지고 있으므로
+            for (int j = 0; j < i; j++) {
+                if (arr[i] < arr[j] && d[i] <= d[j]) {  //기준 수를 기준으로 앞의 주소의 값이 크다면
+                    d[i] = d[j] + 1;  //수열의 개수 추가
+                } else if (arr[i] == arr[j]) {  //앞의 수와 기준수의 값이 갔다면
+                    d[i] = d[j];   //수열의 개수는 앞의 값과 기준값을 일치시킴
+                }
+            }
+        }
+
+        int max = 0;
+
+        for (int i = 1; i <= n; i++)
+            max = Math.max(d[i], max);  //각 값의 수열의 개수를 비교하고 그중에서 가장 큰것을 max변수에 저장
+
+        System.out.println(max); //가장 긴 수열의 개수 출력
+
+        sc.close();
+    }
+}
