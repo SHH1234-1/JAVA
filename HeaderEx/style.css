@@ -1,0 +1,43 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    text-decoration: none; /* 글자 밑 밑줄 없애기*/
+    color: black;
+}
+
+
+.header {
+    height: 145px;
+    text-align: center;
+    background-color: thistle;
+    box-sizing: border-box; /*부모box에 맞추기*/
+    border-bottom: 1px solid #999;
+}
+
+.header__logo h1{
+    font: bold 40px 'arial';
+    padding-top: 14px;
+    letter-spacing: 2px; /*글자와 글자사이의 간격 조절*/
+}
+
+.header__logo p {
+    font: bold 12px 'arial';
+    letter-spacing: 2px;
+}
+
+.header__gnb ul{
+    margin-top: 40px;
+}
+
+.header__gnb ul li{
+    display: inline-block;
+}
+
+.header__gnb ul li a{
+    display: block;
+    font: bold 14px 'arial';
+    color: #999;
+    margin: 0px 16px;
+    letter-spacing: 1px;
+}
