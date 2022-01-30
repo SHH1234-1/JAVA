@@ -1,0 +1,25 @@
+package Baekjoon;
+
+import java.util.Scanner;
+//https://www.acmicpc.net/problem/10872 문제
+public class Number10872 {
+	static int result = 1;
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		int a = sc.nextInt();
+		
+		int sum = factorial(a);
+		System.out.println(sum);
+		
+		
+		}
+		public static int factorial(int a) {
+		if(a<= 1) return result; //재귀 종료 조건
+		result *= a;
+		return factorial(a-1);
+
+	}
+
+}
