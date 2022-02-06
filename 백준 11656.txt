@@ -1,0 +1,35 @@
+package Baekjoon;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Arrays;
+//https://www.acmicpc.net/problem/11656 문제
+public class Number11656 {
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		
+		String s = br.readLine();
+		
+		String[] strArray = new String[s.length()]; //입력한 문자열의 길이의 크기의 배열생성 
+		
+	for(int i = 0; i<s.length(); i++) { //문자열의 길이만큼 반복
+		strArray[i] = s.substring(i, s.length()); //substring(시작위치index,끝위치index) 앞글자를 하나씩 하나씩 제거하고 배열에 차례차례저장
+	}
+		
+	Arrays.sort(strArray); //배열 오름차순 정렬
+	
+	for(String arr : strArray) { //오름차순으로 정렬한것을 arr변수에 넣고
+		bw.write(arr); //차례차례 출력
+		bw.write('\n');
+	}
+	
+	bw.flush();
+	
+	}
+
+}
