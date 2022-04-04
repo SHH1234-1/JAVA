@@ -1,0 +1,47 @@
+package Baekjoon;
+
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Number2309 {
+
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		int[] high = new int[9];
+		int sum = 0;
+		int spyA = 0;
+		int spyB = 0;
+		
+		for(int i =0 ; i<high.length; i ++) {  //모든 난쟁이들의 키 입력
+			high[i] = sc.nextInt();
+			sum += high[i]; //모든 난쟁이들의 키의 합 
+		}
+		
+		Arrays.sort(high);  //오름차순 정렬
+
+		for(int a = 0; a<high.length-1;a++) {
+			for(int b = a+1; b < high.length; b++) {
+				if(sum - high[a] - high[b] == 100) {  //모든 난쟁이의 키를 합한 키에서 2개의 랜덤한 난쟁이 키를 더해 그 값을 빼주어 100이 나온다면 그 2명의 난쟁이가 7난쟁이에 속하지 않는 다른 난쟁이다
+					spyA = a;
+					spyB = b;
+					break;
+				}
+			}
+		}
+		
+		for(int j =0; j<high.length; j++) {  //진짜 7난쟁이 들의 키를 출력
+			if(j == spyA || j == spyB ) {
+				continue;
+			}else {
+				System.out.println(high[j]);
+			}
+		}
+		
+		
+		
+
+	}
+
+}
