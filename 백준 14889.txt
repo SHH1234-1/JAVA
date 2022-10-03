@@ -1,0 +1,77 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class Main {
+
+	static int N;  //축구를 하기위해 총 모인 사람
+	static int min = Integer.MAX_VALUE; //최소값 비료
+	static int[][] arr; //능력치를 담기 위한 배열
+	static boolean[] visit; //dfs
+	
+	public static void main(String[] args) throws IOException {
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());  //총 모인 사람
+		arr = new int[N][N];
+		visit = new boolean[N];
+		
+		for(int i = 0 ; i < N ; i++) {
+		StringTokenizer str = new StringTokenizer(br.readLine());
+		for(int j = 0 ; str.hasMoreTokens();j++) {
+			arr[i][j]= Integer.parseInt(str.nextToken());  //능력치 담기
+		}
+		}
+		
+		dfs(0,0);  //깊이 탐색
+		
+		System.out.println(min);
+		
+
+}
+	public static void dfs(int depth, int a) {
+		
+		if(depth == N/2) {  //탐색기준 전체 참여한 사람 /2까지
+			diff();
+			return;
+		}
+		
+		for(int i = a ; i < N ; i++) {  //dfs
+			visit[i]=true;
+			dfs(depth+1, i+1);
+			visit[i]=false;
+		}	
+	}
+	
+	public static void diff() {
+		int start = 0;  //능력치 초기화
+		int link = 0;    //능력치 초기화
+		for(int i = 0 ; i < N-1 ; i++) {
+			for(int j = i+1 ; j < N ; j++) {
+				if(visit[i]==true && visit[j]==true) {  //방문한 노드는 start팀으로
+					start += arr[i][j];
+					start += arr[j][i];
+				}
+				else if(visit[i]==false && visit[j]==false) {  //방문하지 않는 노드는link팀으로 
+					link += arr[i][j];
+					link += arr[j][i];
+				}
+				
+			}
+		}
+		
+		int val = Math.abs(start - link);  //계산후 -가 나올 가능성으로 절대 값으로 해둠
+		
+		if(val == 0) {  //차이가 없다면
+			System.out.println(val);  //그대로 출력
+			System.exit(0);
+		}
+		
+		min=Math.min(min,val);  //모든 점수의 차를 비교하여 가장 적은 수를 넣기
+	}
+	
+
+}
