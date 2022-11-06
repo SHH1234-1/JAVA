@@ -1,0 +1,52 @@
+package BOJ.BF;
+import java.util.Scanner;
+
+public class Gold5_15661_linkstart {
+    static int N, ans;  
+    static int[][] graph;
+    static boolean[] visit;
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        N = sc.nextInt();  //총 사람수
+        graph = new int[N][N];  //능력치를 담을 배열
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                graph[i][j] = sc.nextInt();  //능력치 배열 2차원 배열로 정리
+            }
+        }
+        ans = Integer.MAX_VALUE;  //최소값을 비교하기 위한 초기화
+        visit = new boolean[N];  //dfs
+        solve(0, 0); //dfs
+        System.out.println(ans);  //출력
+    }
+
+    private static void solve(int depth, int index) {
+        if (depth == N) {  //팀이 정해졌다면
+            check();  //능력치 합을 위한 check함수
+            return;
+        }
+        visit[depth] = true;  //팀을 정하기 위한 dfs
+        solve(depth + 1, index);
+        visit[depth] = false;
+        solve(depth + 1, index);
+    }
+
+    private static void check() {
+        int start = 0;
+        int link = 0;
+        for (int i = 0; i < N; i++) {
+            for (int j = i + 1; j < N; j++) {
+                if (visit[i] != visit[j])
+                    continue;
+                if (visit[i])
+                    start += graph[i][j] + graph[j][i];
+                else
+                    link += graph[i][j] + graph[j][i];
+            }
+        }
+        int tmp = Math.abs(start - link);  //탐색 종료후 가장 작은 값을 tmp에 저장
+        if (tmp < ans)  //전에 담겨 있던 값과 비교하여 가장 작은 값을
+            ans = tmp;  //ans변수에 담기도록 하고 
+    }
+}
