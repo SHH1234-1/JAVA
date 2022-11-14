@@ -1,0 +1,78 @@
+package level3;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+
+public class JewerlyShopping {
+    
+    public static void main(String[] args) {
+        String[] gems = {"DIA", "RUBY", "RUBY", "DIA", "DIA", "EMERALD", "SAPPHIRE", "DIA"};
+
+        Solution sol = new Solution();
+        System.out.println(Arrays.toString(sol.solution(gems)));
+    }
+
+    static class Solution {
+        public int[] solution(String[] gems) {
+            int[] answer = new int[2];
+
+           
+
+            HashSet<String> set = new HashSet<>(); //진열장에 있는 보석을 담을 set 생성
+
+            for (String s : gems) {  //for문을 사용하여 모석종류를 set에 담아줌
+                set.add(s);
+            }
+
+            int n = gems.length;  //진열장의 길이
+
+            int distance = Integer.MAX_VALUE;
+            //범위
+            int left = 0;
+            int right = 0;
+
+            //정답
+            int start = 0;
+            int end = 0;
+
+            HashMap<String, Integer> map = new HashMap<>();  //보석과 보석의 개수를 담을 map 생성
+
+            while (true) {
+
+                if (set.size() == map.size()) {  //보석이 종류의 개수와 진열장에 담은 보석의 개수가 같을경우 진열장에서 보석을 담다 모든 보석을 담는경우
+                    // 범위 좁히기
+                    map.put(gems[left], map.get(gems[left])-1);
+
+                    if (map.get(gems[left]) == 0) {  
+                        map.remove(gems[left]);
+                    }
+                    left++;
+                } else if (right == n) { //범위를 최대로 줄인상태에서 right가 최대일때
+                    break; 종료
+                } else {
+                    //right 오른쪽으로 이동
+                    //set에 해당하는 보석들을 다 찾아야함
+                    //해당 보석의 개수 +1
+                    map.put(gems[right], map.getOrDefault(gems[right], 0) + 1);  //투포인트 오른쪽으로 이동
+                    right++;  //범위를 늘리기 & 범위를 모두 늘린상태에서 투포인트 right를 최대로
+                }
+
+                if (map.size() == set.size()) {  //보석이 모두 담긴 상태에서
+                    if (right-left < distance){  //범위를 줄이기
+                        distance = right-left;
+                        start = left+1;
+                        end = right;
+                    }
+                }
+
+            }//while
+
+            answer[0] = start;  //투포인트 최소 시작점
+            answer[1] = end;    //투포인트 최대 
+
+            return answer; 반환
+        }
+    }
+}
