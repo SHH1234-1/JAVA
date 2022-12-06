@@ -1,0 +1,43 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class Main {
+    static int answer = 0;
+    static int[] dis = {1, -1, 5};
+    static boolean[] ch;  //넓이 탐색을 위한 배열
+    static Queue<Integer> q = new LinkedList<>();  //Queue 선언
+
+    public static int bfs(int s, int e) {
+        ch = new boolean[10001]; //수직선상의 좌표는 10000까지
+        ch[s]=true;  //현재 현수의 좌표는 돈것으로 함
+        q.offer(s);  //Q에 넣어줌
+        int L=0;  //기본 레벨
+        while(!q.isEmpty()){  //Q가 비어지지 않으면
+            int len = q.size();  //Q크기를 가지고
+            for (int i = 0; i < len; i++) {  //Q크기만큼 반복문돌림
+                int cur = q.poll();  //Q안에 있는 원소를 내보내서
+                if(e == cur) 만일 송아지의 위치와 같다면
+                    return L;  //그 레벨을 출력
+                else{
+                    for (int j = 0; j < 3; j++) {  //그게 아니면 
+                        int next = cur + dis[j];  //{1 -1 5}연산을 각각 해줌
+                        if(0<=next && next <= 10000 && !ch[next]) {  //좌표는 10000가지 +아직 돌지 않은 경우에만
+                            q.offer(next);  //Q에 계산한 원소를 넣어줌
+                            ch[next] = true;  //돈것으로 함
+                        }
+                    }
+                }
+            }
+            L++;
+        }
+        return L;
+    }
+
+    public static void main(String[] args) {
+        Scanner kb = new Scanner(System.in);
+        int s = kb.nextInt(); //현수의 위치 입력
+        int e = kb.nextInt(); //송아지의 위치 입력
+        System.out.println(bfs(s,e)); //넓이 탐색
+    }
+}
