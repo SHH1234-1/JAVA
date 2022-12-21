@@ -1,0 +1,36 @@
+import java.util.*;
+class Solution {
+    public String solution(String input_string) {
+        String answer = "";
+        
+        //외톨이 판별 맵
+        Map<Character,Boolean> map = new HashMap<>();
+        
+        //중복 판별
+        Set<Character> set = new TreeSet<>();
+        
+        char[] carr= input_string.toCharArray();
+        
+        char current=' ';
+        
+        for(char temp:carr){       //하나씩 꺼내서              
+             if(current!=temp){   //이전의 알파벳과 꺼낸 알파펫이 같지 않으면
+                 if(map.containsKey(temp)){  //해당 map의 key 값으로 꺼낸 알파벳 값이 있다면
+                     set.add(temp);  //외톨이 알파벳이라는 뜻이므로 set에 넣어줌
+                 }               
+                map.put(temp,true);  //key값으로 없는 경우 새로운 key value값을 만들어줌
+                current=temp;  //꺼낸 알파벳을 current값으로 넣어주고 다음 index 알파벳과 비교
+             }
+        }
+         
+        for(char temp :set){  //set을 꺼내서
+            answer+=temp;  //answer에 넣음
+        }
+        
+        if(answer==""){  //외톨이 알파벳이 없는 경우
+            return "N";  //n 출력
+        }
+        
+        return answer;
+   }
+}
