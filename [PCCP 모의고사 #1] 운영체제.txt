@@ -1,0 +1,55 @@
+import java.util.*;
+class Solution {
+    public long[] solution(int[][] program) {
+        long[] answer = new long[11]; //정답
+        int proLen = program.length;
+        Arrays.sort(program, (o1, o2) -> o1[1] - o2[1]); //배열정렬
+        PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> { //index0부터 작은것 비교해서 넣는 우선queue
+            if(o1[0] == o2[0]) {
+                return o1[1] - o2[1];
+            }
+            return o1[0] - o2[0];
+        });
+        
+        int cnt = 0;
+        int lastComp = 0;
+        int idx = 0;
+        int time = 0;
+        while(cnt < proLen) {
+            
+            for(int i = idx; i < proLen; i++) {
+                int sc = program[i][0];  //점수
+                int ti = program[i][1];   //호출된 시각
+                int ex = program[i][2];   //프로그램 실행시간
+                int arr[] = {sc, ti, ex};
+                if(ti <= time) {  //현재시간보다 호출된 시각이 작으면
+                    pq.add(arr);  //queue에 넣기
+                    idx++;
+                } else {
+                    break;
+                }
+            }
+            
+            if(!pq.isEmpty() && lastComp <= time) {
+                int ar[] = pq.poll();  //
+                int sc = ar[0];
+                int ti = ar[1];
+                int ex = ar[2];
+                
+                lastComp = time + ex;  //현재시간 time + 프로그램 실행시간
+                answer[sc] += time - ti;  //현재시간 - 프로그램 호출시간 = 대기시간
+                cnt++;
+            }
+            
+            
+            
+            
+            time++;
+        }
+        answer[0] = lastComp;  //프로그램 전체 실행시간
+       
+        
+        return answer;
+    }
+    
+}
