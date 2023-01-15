@@ -1,0 +1,36 @@
+class Solution {
+    
+    int[] dx = {0, 1, 0, -1};
+    int[] dy = {1, 0, -1, 0};
+    Point point;
+    
+    public void move(char command) {  //명령어가 입력된 경우
+        switch(command) {
+            case 'R': point.dir = (point.dir + 1) % 4; break;  //오른쪽 = 시계방향 
+            case 'L': point.dir = (point.dir + 3) % 4; break;   //왼쪽 =반시계 방향
+            case 'G': point.x += dx[point.dir];  //한칸전진
+                point.y += dy[point.dir];   //한칸전진
+                break;
+            case 'B': point.x -= dx[point.dir];  //후진할경우는 반대로 -해주면 시계방향은 반시계 반시계방향은 시계방향으로 회전한다
+                point.y -= dy[point.dir];
+        }
+    }
+    
+    public int[] solution(String command) {
+        int[] answer = new int[2];  //정답배열
+        point = new Point(0, 0, 0);  //x y dir 초기화
+        for(int i = 0; i < command.length(); i++) move(command.charAt(i));  //for문으로 명령어를 하나씩 분리한 후 switch문으로 보냄
+        answer[0] = point.x;
+        answer[1] = point.y;
+        return answer;
+    }
+    
+    class Point {
+        int x, y, dir;  //x축 y축 dir 현재위치
+        Point(int x, int y, int dir) {
+            this.x = x;
+            this.y = y;
+            this.dir = dir;
+        }
+    }
+}
