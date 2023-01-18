@@ -1,0 +1,21 @@
+import java.util.*;
+
+class Solution {
+    public int solution(int[] ability, int number) {  // ability 사원들의 능력치 배열 number 교육횟수
+        int answer = 0;  //초기화
+        
+        PriorityQueue<Integer> pq = new PriorityQueue<>();  //우선순위 q
+        for(int a : ability) {  //능력치들을 전부 우선순위 배열에 넣음
+            pq.add(a);
+            answer += a;
+        }
+        for(int i = 0; i < number; i++) {  //교육횟수만큼 반복
+            int sum = pq.remove() + pq.remove();  //능력치가 작은 = 가장작은수 2개를 꺼내서 더하고
+            pq.add(sum);  //두번 다시 q에 넣어주기
+            pq.add(sum);
+            answer += sum;  //능력치 최소합
+        }
+        
+        return answer;  
+    }
+}
