@@ -1,0 +1,61 @@
+mport java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class Exam2529 {
+
+	static boolean[] check = new boolean[10]; // 0~9까지 check
+	static int n;  //부등호의 개수
+	static char[] a = new char[10]; // 부등호는 최대 9개임
+	static ArrayList ans = new ArrayList<>();  //결과 값이 저장될 ArrayList
+
+	static boolean ck(char a, char b, char c) {
+		if (c == '<') {
+			if (a > b) {
+				return false;
+			}
+		}
+		if (c == '>') {
+			if (a < b) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	static void go(int index, String num) {
+		if (index == n + 1) {  //수가 3개가 선택되면
+			ans.add(num);  //arraylist에 저장
+			return;
+		}
+
+		for (int i = 0; i <= 9; i++) {
+			if (check[i])  //돌았다면
+				continue;  //다음
+			if (index == 0 || ck(num.charAt(index - 1), (char) (i + '0'), a[index - 1])) {  //index == 0 첫번째 수만 선택될 경우
+				check[i] = true;  //체크
+				go(index + 1, num + Integer.toString(i));  //다음 레벨 , 돌았던 수를 다음 레벨에 메게변수로 전달 
+				check[i] = false;
+			}
+		}
+
+	}
+
+	public static void main(String[] args) {
+
+		Scanner sc = new Scanner(System.in);
+		n = sc.nextInt();  //부등호 개수 입력
+
+		for (int i = 0; i < n; i++) {
+			a[i] = sc.next().toCharArray()[0];  //부등호를 입력하여 배열에 저장
+		}
+
+		go(0, "");  //0~9까지 이므로 처음은 0부터 시작함
+		Collections.sort(ans);
+
+		System.out.println(ans.get(ans.size() - 1));
+		System.out.println(ans.get(0));
+
+	}
+
+}
