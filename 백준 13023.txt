@@ -1,0 +1,68 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
+
+public class Main {
+	private static int m;
+	private static ArrayList<Integer>[] list;  //인접 행렬을 표시하기 위한 ArrayList
+	private static int ans = 0;
+	private static boolean[] v;
+
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		int N = Integer.parseInt(st.nextToken());  //사람의 수
+		int M = Integer.parseInt(st.nextToken());  //친구 관계의 수
+		m = M;
+		
+		//DFS를 위한 인접리스트 구현하기
+		list = new ArrayList[N];
+		v = new boolean[N];
+		for(int i = 0; i < N; i++) {
+			list[i] = new ArrayList<Integer>();  //사람 수 만큼 ArrayList크기 잡아줌
+		}
+		
+		for(int i = 0; i < M; i++) {
+			st = new StringTokenizer(br.readLine()); //다음줄 읽음
+			int n1 = Integer.parseInt(st.nextToken());  
+			int n2 = Integer.parseInt(st.nextToken());
+			list[n1].add(n2);  //a라는 관계와 b라는 관계를 인접하는 방법으로 index와 value로 나누어 인접한다
+			list[n2].add(n1);
+		}
+		
+		
+		for(int i = 0; i < N; i++) {  //모든 노드를 시작점으로 두기 위함
+			if(ans == 0)
+				dfs(i, 1);
+		}
+		
+		bw.write(Integer.toString(ans));
+		bw.flush();
+		bw.close();
+		br.close();
+	}
+	
+	public static void dfs(int start, int depth) {
+		//System.out.println(start + " " + depth); //방문 정점과 깊이를 확인해보고 싶을 때 사용
+		if(depth == 5) {  //깊이가 5라면 관계가 존재 하는 것이므로
+			ans = 1;  //1을 돌려준다
+			return;
+		}
+		
+		v[start] = true;
+		for(int i : list[start]) {  //하나의 노드에서 여러 노드를 인접하고 있을 경우가 있으므로
+			int next = i;
+			if(!v[next]) {
+				dfs(next, depth+1);
+			}
+		}
+		v[start] = false;
+	
+	}
+}
