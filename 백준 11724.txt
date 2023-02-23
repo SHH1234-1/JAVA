@@ -1,0 +1,53 @@
+import java.util.*;
+
+public class Main {
+	
+	static int[][] graph = new int[1001][1001];  //간선연결을 위한 2차원배열
+	static int V;
+	static int E;
+	static boolean[] visited = new boolean[1001];
+	
+	public static void dfs(int index) {
+		if(visited[index] == true)
+			return;
+		else {
+			visited[index] = true;  //노드방문
+			for(int i = 1; i <= V; i++) {  //노드 방문후 인접한 노드 검색
+				if(graph[index][i] == 1) {
+					dfs(i);
+				}
+			}
+		}
+	}
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in); 
+		
+		V = sc.nextInt();  //정점의 개수
+		E = sc.nextInt();   //간선의 개수
+		
+		int a,b;
+		for(int i = 0; i < E; i++) {
+			a = sc.nextInt();  
+			b = sc.nextInt();
+			
+			// 간선 연결
+			graph[a][b] = graph[b][a] = 1;
+		}
+		
+		int result = 0 ;  //연결요소의 개수 초기화
+		
+		// dfs 탐색
+		for(int i = 1; i <= V; i++) {
+			if(visited[i] == false) { // 방문한 적 없는 노드라면 dfs.
+				dfs(i);
+				result++;
+			}
+		}
+		
+		System.out.println(result);
+		
+		sc.close();
+		return;
+	}
+}
