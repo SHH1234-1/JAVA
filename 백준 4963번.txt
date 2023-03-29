@@ -1,0 +1,71 @@
+import java.util.*;
+import java.io.*;
+
+public class Main {
+	static int arr[][];  //섬과 바다를 담을 2차원 배열
+	static boolean visit[][];  //DFS방문여부
+	static int dirX[] = {0, 0, -1 ,1, -1, 1, -1, 1}; // 상 하 좌 우 대각선 상좌, 상우, 하좌, 하우
+	static int dirY[] = {-1, 1, 0, 0, 1, 1, -1, -1}; // 상 하 좌 우 대각선 상좌, 상우, 하좌, 하우
+
+	static int w, h, nowX, nowY;  //넓이 높이 인접행렬
+
+	public static void main(String[] args) throws Exception {
+		StringBuilder sb = new StringBuilder();
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st;
+
+		String str = " ";
+		while( !(str = br.readLine()).equals("0 0") ) {  ///넓이가 0이고 높이가 0인 섬은 없으므로 00조건을 단다
+			st = new StringTokenizer(str);
+	
+
+			w = Integer.parseInt(st.nextToken()); // 너비
+			h = Integer.parseInt(st.nextToken()); // 높이
+			arr = new int[h][w];
+			visit = new boolean[h][w];
+
+			for(int i=0; i<h; i++) {
+				st = new StringTokenizer(br.readLine());
+
+				for(int j=0; j<w; j++) {
+					arr[i][j] = Integer.parseInt(st.nextToken());
+	
+				}
+			}
+
+			int island_count = 0;  //섬의 개수 초기화
+			for(int i=0; i<h; i++) {
+				for(int j=0; j<w; j++) {
+
+					if(!visit[i][j] && arr[i][j] == 1) > //만일 방문하지 않고 1(섬)이라면
+						island_count++;  //섬 개수 +1
+						DFS(i, j); 
+					}
+				}
+			} 
+
+			sb.append(island_count).append('\n'); //각 케이스 개수(섬의개수)들을  StringBuilder에넣고 
+		}
+
+		System.out.println(sb);  //출력
+	} 
+
+	static void DFS(int x, int y) {
+		visit[x][y] = true;  //방문
+
+		for(int i=0; i<8; i++) {  //인접한 1(섬)상하좌우 대각선 전부 체크
+			nowX = dirX[i] + x;
+			nowY = dirY[i] + y;
+
+			if(range_check() && !visit[nowX][nowY] && arr[nowX][nowY] == 1) {
+				DFS(nowX, nowY);
+			}
+		}
+
+	} 
+
+	static boolean range_check() {  //범위를 벗어나면 안되므로 범위 지정
+		return (nowX >= 0 && nowY >= 0 && nowX < h && nowY < w);
+	} 
+
+} // End of Main class
