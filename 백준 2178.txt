@@ -1,0 +1,62 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+import java.util.StringTokenizer;
+
+public class Main {
+	
+	static int[][] map;  //미로를 담을 배열
+	static int n;  //미로의 세로크기
+	static int m;  //미로의 가로크기
+	static boolean[][] visited;
+	static int[] dx = { -1, 1, 0, 0 }; //x방향배열-상하
+    	static int[] dy = { 0, 0, -1, 1 }; //y방향배열-좌우
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		n = Integer.parseInt(st.nextToken());  //미로의 높이
+		m = Integer.parseInt(st.nextToken()); //미로의 넓기
+		
+		map = new int[n][m];
+		for(int i=0; i<n; i++) {   //미로를 배열에 넣기
+			String s = br.readLine();
+			for(int j=0; j<m; j++) {
+				map[i][j] = s.charAt(j) - '0';  
+			}
+		}
+		
+		visited = new boolean[n][m];  //방문여부를 위한 배열
+		visited[0][0] = true;  //처음 좌표 방문
+		bfs(0, 0);  //bfs
+		System.out.println(map[n-1][m-1]);
+	}
+
+	public static void bfs(int x, int y) {  //현재 미로의 좌표를 매개변수로 하여
+		Queue<int[]> q = new LinkedList<>();  //q
+		q.add(new int[] {x,y});  //q에 현재 미로의 좌표로 한 배열 생성
+		
+		while(!q.isEmpty()) {
+			int now[] = q.poll();
+			int nowX = now[0];
+			int nowY = now[1];
+			
+			for(int i=0; i<4; i++) {  //현재 미로를 기준으로 상하좌우로 인접한 배열 다 돌기
+				int nextX = nowX + dx[i];  
+				int nextY = nowY + dy[i];
+				
+		                if (nextX < 0 || nextY < 0 || nextX >= n || nextY >= m)  //인접한 배열이 미로의 최소크기인 0 이거나 최대크기인 n m을 넘었을 격우
+                		    continue;
+        		        if (visited[nextX][nextY] || map[nextX][nextY] == 0)  //미로의 해당배열이 방문했거나 배열이 이동할 수 없는칸(0)일경우
+                    		continue;
+                    
+		                q.add(new int[] {nextX, nextY});  //인접한 좌표를 다시 배열에 넣고 q에 add시킴
+        		        map[nextX][nextY] = map[nowX][nowY] + 1;  //미로의 개수를 계속 추가
+                		visited[nextX][nextY] = true;  //방문
+			}
+		}
+	}
+}
