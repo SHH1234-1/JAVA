@@ -1,0 +1,86 @@
+package 그래프탐색;
+
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+
+public class BOJ7576 {
+    static int[] dx = {-1, 1, 0, 0};  //상하좌우 탐색
+    static int[] dy = {0, 0, -1, 1};
+    static int n, m;  //가로 세로 길이
+    static int[][] map;  //토마토를 담을 배열
+    static Queue<int[]> q = new LinkedList<>();  //BFS를 위한 q
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
+        st = new StringTokenizer(br.readLine());
+        m = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
+
+        map = new int[n][m];  //토마토상자의크기
+
+
+        for (int i = 0; i < n; i++) {  //토마토를 배열에 담아줌(토마토를 토마토의 상자에 담아줌)
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < m; j++) {
+                map[i][j] = Integer.parseInt(st.nextToken());
+                if (map[i][j] == 1) {  //만일 다익은 토마토가 발견이 되면
+                    q.add(new int[]{i, j});  //BFS를 위해서 q에 pull해줌
+                }
+            }
+        }
+
+        System.out.println(bfs());
+    }
+
+    private static int bfs() {
+        while (!q.isEmpty()) {
+            int[] t = q.poll();
+            int x = t[0];
+            int y = t[1];
+            for (int i = 0; i < 4; i++) {
+                int nx = x + dx[i];
+                int ny = y + dy[i];
+                if (nx < 0 || nx >= n || ny < 0 || ny >= m) continue;  //토마토상자를 넘어가서는 안됨
+                if (map[nx][ny] == 0) {  //토마토가 아직 익지 않았다면
+                    map[nx][ny] = map[x][y] + 1;  //+1을 해줌 (1일뒤에 토마토가 익음)
+                    q.add(new int[]{nx, ny});  //q에 add 익지않은 토마토가 익었을때 다시 상하좌우를 for문으로 돌려서 +1을 해줌
+                }
+            }
+        }
+
+        int max = Integer.MIN_VALUE;
+        if (checkZero()) {  
+            return -1;  //-1출력
+        } else {
+            for (int i = 0; i < n; i++) {  //그렇지 않은경우
+                for (int j = 0; j < m; j++) {
+                    if (max < map[i][j]) {  //모든배열을 돌면서 가장 오랜시간이 지나고 익은 토마토를 max변수에 넣어줌
+                        max = map[i][j];
+                    }
+                }
+            }
+
+            return max - 1;
+        }
+
+
+    }
+
+    private static boolean checkZero() {  //전체 토마토 상자를 돌면서 익지 않은 토마토가 익을 경우
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (map[i][j] == 0)  //익지 않은 토마토가 하나라도 있다면
+                    return true;
+            }
+        }
+        return false;
+    }
+}
