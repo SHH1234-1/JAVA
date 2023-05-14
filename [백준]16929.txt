@@ -1,0 +1,60 @@
+import java.util.*;
+ 
+public class Main {
+    
+    static int n, m;  //게임판의 크기
+    static char[][] board;  //게임판의 상태 알파벳이므로 char
+    static boolean[][] memo;  //DFS 방문여부
+    static int[] dx = {0, 1, 0, -1};  //가로세로 방향 인접 
+    static int[] dy = {1, 0, -1, 0};
+    static int firstX, firstY;  //사이클 존재여부를 위한 첫 시작점 좌표
+    
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+ 
+        n = scan.nextInt();  //가로
+        m = scan.nextInt();  //세로
+        scan.nextLine();  //게임판의 상태
+        
+        board = new char[n][m];  //게임판의 크기
+        for(int i = 0; i < n; i++) {
+            String str = scan.nextLine();  //한줄을 입력받아서
+            for(int j = 0; j < m; j++) {
+                board[i][j] = str.charAt(j);  //게임판 배열로 넣어줌
+            }
+        }
+    
+        boolean isCircle = false;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                memo = new boolean[n][m];
+                firstX = i;
+                firstY = j;
+                if(dfs(i, j, 1)) {
+                    System.out.println("Yes");
+                    return;
+                }
+            }
+        }
+        
+        System.out.println("No");
+    }
+    
+    public static boolean dfs(int x, int y, int count) {        
+        memo[x][y] = true;
+        for(int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            
+            if(nx >= 0 && ny >= 0 && nx < n && ny < m && board[x][y] == board[nx][ny]) { //게임판의 범위를 벗어나서는 안되고 현재위치에 있는 알파벳와 인접한 index의 배열안에 들어있는 값이 같아야한다
+                if(memo[nx][ny] == false) {  //인접index가 방문하지 않았을 경우
+                    memo[nx][ny] = true;  //방문으로 바꿔주고
+                    if(dfs(nx, ny, count + 1)) return true; 
+                } else {
+                    if(count >= 4 && firstX == nx && firstY == ny) return true;
+                }
+            }
+        }
+        return false;
+    }
+}
