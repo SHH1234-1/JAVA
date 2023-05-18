@@ -1,0 +1,86 @@
+import java.util.*;
+ 
+public class Main {
+ 
+    static ArrayList<Integer>[] list;  //ArrayList lnteger형을 index로 받는 []list생성 list index를 기준역으로 하고 arrayList에 들어있는 값을 인접노드로 한다
+    static int n;  //역의 총개수
+    static boolean[] isCycle;  //사이클인지아닌지를 판별하기 위한 boolean 배열
+ 
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+ 
+        n = scan.nextInt();  //역의 총개수
+ 
+        list = new ArrayList[n + 1]; //역의 개수만큼 list값으로 함
+        for(int i = 1; i <= n; i++) {
+            list[i] = new ArrayList<>();  //역의 개수만큼 ArrayList를 만들고 list에 각각 넣어줌
+        }
+ 
+        for(int i = 0; i < n; i++) {  //인접하는 역을 입력받고
+            int n1 = scan.nextInt();
+            int n2 = scan.nextInt();
+            list[n1].add(n2);  //arrayList에 넣어줌
+            list[n2].add(n1);
+        }
+ 
+        //싸이클을 찾아 표시해준다.
+        isCycle = new boolean[n + 1];
+        for(int i = 1; i <= n; i++) {  //모든 역의 개수만큼 반복
+            if(checkCycle(i, i, i)) break;  //사이클 노드 사이클 역이라면 break
+            isCycle = new boolean[n + 1];  그렇지 않다면 새로운 boolean배열 생성
+        }
+ 
+        int[] result = new int[n + 1];  //결과를 받을 result 배열
+        for(int i = 1; i <= n; i++) {  모든 역을 돈후
+            if(!isCycle[i]) result[i] = bfs(i);  //bfs사이클 역까지의 거리
+        }
+ 
+        for(int i = 1; i <= n; i++) System.out.print(result[i] + " ");
+    }
+ 
+    public static int bfs(int node) {
+        Queue<Node> q = new LinkedList<>();
+        boolean[] visited = new boolean[n + 1];  //방문여부
+        q.add(new Node(node, 0));
+        visited[node] = true;  //현재역 방문
+ 
+        while(!q.isEmpty()) {
+            Node current = q.poll();
+            if(isCycle[current.v]) return current.count;  //만일 현재역이 사이클에 속해있는 역일 경우 현재 count return
+ 
+            for(int i = 0; i < list[current.v].size(); i++) {  //사이클에 속하지 않는 역의 인접 역 개수만큼 for문
+                int next = list[current.v].get(i);  //인접역 하나를 꺼내서
+                if(!visited[next]) {  //인접역이 방문하지 않았을경우
+                    visited[next] = true;  //방문체크하고 
+                    q.add(new Node(next, current.count + 1));  //Q에 넣어줌
+                }
+            }
+        }
+        return 0;
+    }
+ 
+    public static boolean checkCycle(int prev, int node, int start) {  //어떤 노드가 사이클에 들어가는지를 알아내기위한 checkCycle 메소드
+        isCycle[node] = true;  //현재노드 방문
+ 
+        for(int i = 0; i < list[node].size(); i++) {  //현재 역에서 인접한 역의 개수만큼을 크기로 잡아줌
+            int next = list[node].get(i);  //인접한 역중 하나를 꺼내서
+ 
+            if(!isCycle[next]) {  //방문하지 않았을때
+                if(checkCycle(node, next, start)) return true;  //checkCycle에 현재역 인접역 시작하는역을 넣고 메소드 호출
+            } else if(next != prev && next == start) return true;  //사이클 여부판단 다음에 가려고 하는 역이 이전역과 같지 않고 다음에 가려고 하는 역이 시작역일경우 사이클
+        }
+        isCycle[node] = false;  //방문한역을 모두 초기화 시켜줌
+        
+        return false;
+    }
+ 
+    public static class Node {
+        int v;
+        int count;
+ 
+        public Node(int v, int count) {
+            this.v = v;
+            this.count = count;
+        }
+    }
+}
