@@ -1,0 +1,99 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+class Main {
+    private static int[][] map; //지도
+    private static boolean[][] isVisited; //방문
+    private static int N; //지도의 크기
+    private static int[] dr = new int[]{-1, 0, 1, 0}; //인접한 x좌표
+    private static int[] dc = new int[]{0, -1, 0, 1}; //인접한 y좌표
+    private static int landNum = 2; //섬 번호이름
+    private static int answer = Integer.MAX_VALUE; //답
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);  //지도
+        N = sc.nextInt();  //지도의 크기
+        map = new int[N][N]; //지도의 크기만큼 배열의 크기를 생성
+        isVisited = new boolean[N][N]; //bfs 방문 배열
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                map[i][j] = sc.nextInt();  //각 지도의 수를 map배열에 넣어줌
+            }
+        }
+
+        for (int r = 0; r < N; r++) {
+            for (int c = 0; c < N; c++) {
+                if (map[r][c] == 1) { // 아직 번호이름 없는 섬인 경우
+                    makeLand(r, c);  //섬별로 번호이름 붙이기 
+                }
+            }
+        }
+
+        for (int r = 0; r < N; r++) {
+            for (int c = 0; c < N; c++) {
+                if (map[r][c] >= 2) {
+                    isVisited = new boolean[N][N]; //방문 배열 초기화
+                    bfs(r, c);
+                }
+            }
+        }
+        System.out.println(answer);
+    }
+
+    // 섬 별로 번호이름 붙여주기
+    private static void makeLand(int r, int c) {
+        Queue<Point> queue = new LinkedList<>();
+        queue.offer(new Point(r, c, 0));  //x좌표 y좌표 카운트를 0으로 초기화해서 point class의 멤버변수에 넣어줌
+        isVisited[r][c] = true; //방문
+        map[r][c] = landNum;  //모든 섬을 2로 바꿔줌
+        while (!queue.isEmpty()) {
+            Point point = queue.poll();
+            for (int i = 0; i < 4; i++) {
+                int r2 = point.r + dr[i];
+                int c2 = point.c + dc[i];
+                if ((r2 >= 0 && r2 < N && c2 >= 0 && c2 < N) && !isVisited[r2][c2] && map[r2][c2] == 1) { //지도의 크기를 넘지 않고 방문하지 않았으며 인접한게 섬인 경우
+                    isVisited[r2][c2] = true;  //방문체크
+                    map[r2][c2] = landNum;  //
+                    queue.offer(new Point(r2, c2, 0));
+                }
+            }
+        }
+        landNum++;
+    }
+
+    private static void bfs(int r, int c) {
+        Queue<Point> queue = new LinkedList<Point>();
+        queue.offer(new Point(r, c, 0));  //x좌표 y좌표 카운트를 0으로 초기화해서 point class의 멤버변수에 넣어줌
+        int currentLandNum = map[r][c];// 현재 섬 번호
+        isVisited[r][c] = true; //방문
+        while (!queue.isEmpty()) {  //bfs
+            Point point = queue.poll();
+            for (int i = 0; i < 4; i++) {
+                int r2 = point.r + dr[i];
+                int c2 = point.c + dc[i];
+                if ((r2 >= 0 && r2 < N && c2 >= 0 && c2 < N) && !isVisited[r2][c2] && map[r2][c2] != currentLandNum) { //지도의 크기를 벗어나지 않으면서 방문하지 않고 다른바다 다른 섬인경우
+                    isVisited[r2][c2] = true; //방문
+                    if (map[r2][c2] == 0) { //바다
+                        queue.offer(new Point(r2, c2, point.cnt + 1));
+                    } else { //다른 섬
+                        answer = Math.min(answer, point.cnt);
+                    }
+                }
+            }
+        }
+    }
+
+    static class Point {
+        int r;
+        int c;
+        int cnt;
+
+        public Point(int r, int c, int cnt) {
+            this.r = r;
+            this.c = c;
+            this.cnt = cnt;
+        }
+    }
+
+}
