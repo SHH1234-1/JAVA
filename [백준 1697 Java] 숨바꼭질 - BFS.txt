@@ -1,0 +1,65 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class Main
+{
+	static int N; //수빈이의 위치
+	static int K;  //동생의 위치
+	
+	static int visited[] = new int[100001];  // 수빈이는 현재 점 N(0 ≤ N ≤ 100,000)에 있고, 동생은 점 K(0 ≤ K ≤ 100,000)에 있다.
+	
+	// X-1, X+1
+	// 2*X
+	public static void main(String[] args) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		String input = br.readLine();  //수빈이의 위치와 동생의 위치를 input 변수에 저장
+		String[] inputs = input.split(" ");  //수빈이의 위치와 동생의 위치를 분리하여 배열 inputs에 저장
+		
+		N = Integer.valueOf(inputs[0]);  //수빈이의 위치를 변수 N에 저장
+		K = Integer.valueOf(inputs[1]);  //동생의 위치를 변수K에 저장
+		
+		int result = bfs(N);  //bfs
+		System.out.println(result);
+	}
+
+	private static int  bfs(int node)  //node 현재 수빈이의 위치
+	{
+		Queue<Integer> queue = new LinkedList<Integer>();  //현재 수빈이의 위치 integer형으로 받는 bfs q생성
+		
+		queue.add(node);  //q에 수빈이 위치 add
+		int index = node;  //index변수를 생성하여 현재 수빈이의 위치를 넣음
+		int n = 0;  //q에 저장되어있는 수빈이의 위치를 받기위한 변수 n 초기화
+		visited[index] = 1; //현재 수빈이의 위치 방문체크
+		while (queue.isEmpty() == false)
+		{
+			n = queue.remove();  //q에 저장되어 있던 수빈이의 위치를 꺼내서 n에 저장
+			
+			if (n == K)  //수빈이의 위치와 동생의 위치가 같다면 
+			{
+				return visited[n]-1;  //0초시작을 1초로 잡았기때문에 1초를 빼서 return해줌
+			}
+			
+			if (n-1>=0 && visited[n-1] == 0)  //x-1이동 이동위치가 방문하지 않았더라면
+			{
+				visited[n-1] = visited[n]+1;  //현재수빈이의 위치의 걸린시간에서 1초를 더하고 다음 수빈이 위치의 value값으로 입력
+				queue.add(n-1);  //다음위치를 현재위치로 변경
+			}
+			if (n+1 <= 100000 && visited[n+1] == 0)  //x+1 이동 해당위치가 방문되지 않았더라면
+			{
+				visited[n+1] = visited[n]+1;  //현재수빈이의 위치의 걸린시간에서 1초를 더하고 다음 수빈이 위치의 value값으로 입력
+				queue.add(n+1);  //현재위치를 다음위치로 바꿔줌
+			}
+			if (2*n <= 100000 && visited[2*n] == 0)  //2*X 이동 이동위치가 방문하지 않았더라면
+			{
+				visited[2*n] = visited[n] + 1;  //현재수빈이의 위치의 걸린시간에서 1초를 더하고 다음 수빈이 위치의 value값으로 입력
+				queue.add(2*n);   //현재위치를 다음위치로 바꿔줌
+			} 
+		}
+		return -1;
+	}
+}
