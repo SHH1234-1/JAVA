@@ -1,0 +1,82 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Main_S1_1991 {
+
+	static Node head = new Node('A', null, null); //모든 순회의 root는 A이므로 A의 값을 가진 노드 객체 생성
+	
+	public static void main(String[] args) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		int n = Integer.parseInt(br.readLine()); //노드의 개수
+		
+		for(int i=0;i<n;i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			
+			char root = st.nextToken().charAt(0);
+			char left = st.nextToken().charAt(0);
+			char right = st.nextToken().charAt(0);
+			
+			insertNode(head, root,left,right);  //현재 root노드와 좌우 인접한 노드를 연결해주는 메소드 insertNode
+		}
+		
+		preOrder(head);  //전위 순회 모든 트리의 첫 root는 A
+		System.out.println();
+		inOrder(head);
+		System.out.println();
+		postOrder(head);
+		System.out.println();
+		
+		
+		
+	}
+	
+	
+	static class Node{
+		char value;  //현재 노드의 값
+		Node left;  //현재 노드의 왼쪽에 위치하는 노드
+		Node right;  //현재 노드의 오른쪽에 위치하는 노드
+		
+		Node(char value, Node left, Node right){
+			this.value = value;
+			this.left = left;
+			this.right = right;
+		}
+	}
+
+	public static void insertNode(Node temp, char root, char left, char right) {  //현재 노드와 인접한 노드의 객체를 생성하고 순회위치를 바꾸는 메소드		
+		
+		if (temp.value == root) {  //현재의 노드객체의 값과 root값이 같다면
+			temp.left = (left == '.' ? null : new Node(left,null,null)); //left값이 . 이면 null을 null이 아니면 현재 left값을 가지는 node 객체를 생성하고 현재 node객체의 temp.left에 넣어줌으로써 현재 node의 왼쪽에 연결한다
+			temp.right = (right == '.' ? null : new Node(right,null,null)); //right값이 . 이면 null을 null아니면 현재 right값을 가지는 node 객체를 생성하고 현재 node객체의temp.right에 넣어줌으로써 현재 node의 오른쪽에 연결한다
+		}
+		else {      //현재의 노드객체의 값과 root값이 같지 않다면
+			if(temp.left != null) insertNode(temp.left, root, left, right);  if(temp.left != null)현재 노드에서 왼쪽에 인접해 있는 노드를 root 노드로 바꾸고  insertNode(temp.left, root, left, right); 왼쪽노드와 좌우에 인접한 노드를 연결한다 
+			if(temp.right != null) insertNode(temp.right, root, left, right); temp.right != null 현재 노드에서 오른쪽에 인접해 있는 노드를 root노드로 바꾸고  insertNode(temp.left, root, left, right); 오른쪽노드와 좌우에 인접한 노드를 연결한다 
+		}
+	}
+	
+	public static void preOrder(Node node) {  
+		if(node ==null) return;  //노드가 없으면 그대로 return
+		System.out.print(node.value);  //현재 노드의 값 출력
+		preOrder(node.left); //전위 순회는 루트 왼쪽 오른쪽 순이므로 인접한 노드들의 왼쪽부터 출력
+		preOrder(node.right); //왼쪽 자식을 모두 출력후 오른쪽 자식 출력
+	}
+	
+	public static void inOrder(Node node) {
+		if(node ==null) return;  
+		inOrder(node.left);  //중위 순회 왼쪽 루트 오른쪽 현재 노드의 왼쪽 자식들을 모두 출력하고
+		System.out.print(node.value);  //루트 자신을 출력
+		inOrder(node.right);  //왼쪽 루트 출력후 오른쪽 자식 출력
+	}
+	
+	public static void postOrder(Node node) {
+		if(node ==null) return;
+		postOrder(node.left);  //후위 순회 왼쪽 오른쪽 루트 순 root노드의 왼쪽 인접노드를 모두 출력후
+		postOrder(node.right);  //오른쪽 노드 출력
+		System.out.print(node.value);  //마지막으로 root노드 출력
+	}
+
+}
