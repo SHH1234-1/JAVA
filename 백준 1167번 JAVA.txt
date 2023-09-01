@@ -1,0 +1,66 @@
+import java.util.*;
+ 
+public class Main {    
+ 
+    static ArrayList<Node>[] list;  //트리의 두 정점을 잇기 위한 ArrayList 데이터 타입은 Node 객체
+    static boolean[] visited;  //노드 방문여부를 위한 boolean배열
+    static int max = 0;  // 그 정점까지의 거리 초기화
+    static int node;  
+    
+    public static void main(String args[]) {
+        Scanner scan = new Scanner(System.in);  
+        
+        int n = scan.nextInt();  //먼저 첫 번째 줄에서는 트리의 정점의 개수 V가 주어지고
+        list = new ArrayList[n + 1]; //정점의 개수만큼 ArrayList크기설정
+        for(int i = 1; i < n + 1; i++) {
+            list[i] = new ArrayList<>();  ////정점의 개수만큼 ArrayList크기설정
+        } 
+        
+        for(int i = 0; i < n; i++) {
+            int s = scan.nextInt();  //정점 번호1
+            while(true) {
+                int e = scan.nextInt(); //정점 번호2
+                if(e == -1) break;
+                int cost = scan.nextInt();  //정점 번호1에서 정점번호2까지의 거리
+                list[s].add(new Node(e, cost));  //list[s]정점번호1 new Node(e, cost) e 정점번호2 cost 정점번호 1에서2까지의 거리
+            }
+        }
+        
+        //임의의 노드(1)에서 부터 가장 먼 노드를 찾는다. 이때 찾은 노드를 node에 저장한다.
+        visited = new boolean[n + 1];
+        dfs(1, 0);
+        
+        //node에서 부터 가장 먼 노트까지의 거리를 구한다.
+        visited = new boolean[n + 1];
+        dfs(node, 0);
+        
+        System.out.println(max);
+    }
+    
+    public static void dfs(int x, int len) {  //x노드 len 거리
+        if(len > max) {  //기존에 있는 노드정점간의 거리(max)보다 현재 노드간의 정점의 거리가 더 길면
+            max = len;  //현재 노드의 길이를 max에 저장하고
+            node = x;  //노드의 정점 
+        }
+        visited[x] = true;
+        
+        for(int i = 0; i < list[x].size(); i++) { //list[x].size()만큼 반복
+            Node n = list[x].get(i);  //현재 정점 번호와 인접한 정점번호 그 정점까지의 거리정보를 가지고 있는 node
+            if(visited[n.e] == false) {  //다른 정점 번호를 방문하지 않았다면
+                dfs(n.e, n.cost + len);  //다른 정점번호를 현재정점 번호로 바꿔주고 정점까지의 거리를 누적시킨다
+                visited[n.e] = true;  //방문 체크
+            }
+        }
+        
+    }
+    
+    public static class Node {
+        int e;
+        int cost;
+        
+        public Node(int e, int cost) {
+            this.e = e;
+            this.cost = cost;
+        }
+    }
+}
