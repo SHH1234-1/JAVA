@@ -1,0 +1,79 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+public class Main {
+    static ArrayList<Node>list[] ; //부모노드와 자식노드를 연결하기 위한 Node type의 Arraylist list[]
+    static int n;//노드의 개수
+    static int max = 0; //가중치의 최대값 초기화
+    static boolean visited[];  //방문여부
+    static int max_idx = 0;  //노드 방문여부 index값 초기화
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        
+        
+        n = Integer.parseInt(br.readLine());  //테스트 개수를 n에 저장
+        
+        
+        list = new ArrayList[n+1];  //노드개수+1만큼 ArrayList크기 만들어줌
+        
+        for(int i=0; i<=n; i++) {  
+            list[i] = new ArrayList<>();  //노드개수만큼 list[] Arraylist에 Arraylist생성
+        }
+        
+        
+        
+        
+        for(int i=0; i<n-1; i++) {  //간선에 대한 정보는 노드개수 -1 
+            String [] t = br.readLine().split(" ");  //두 노드의 정보와 간선의 정보를 split해서 t 배열에 넣어줌
+            int parent = Integer.parseInt(t[0]);  //부모노드
+            int child = Integer.parseInt(t[1]);  //자식노드
+            int weight = Integer.parseInt(t[2]); //두 노드간의 간선 가중치
+            list[parent].add(new Node(child,weight)); //list[부모노드]인덱스번호의 Arraylist에 자식노드와 간선정보를 넣어줌
+            list[child].add(new Node(parent,weight));  //list[자식노드]인덱스번호의 Arraylist에 부모노드와 간선정보를 넣어줌
+        }
+        
+        visited = new boolean[n+1];  //노드 방문여부 확인의 visited 배열
+        visited[1] = true;  //노드시작점이 1번부터임으로 1번 방문
+        dfs(1,0);  //dfs 시작노드 ,간선의 가중치의 합
+        
+        
+        visited = new boolean[n+1];
+        visited[max_idx] = true;
+        dfs(max_idx,0);
+        System.out.println(max);
+        
+    }
+    public static void dfs(int idx, int cnt) {
+        
+        if(max < cnt) {  //이전의 간선 가중치의 합보다 현재 가중치의 합이 더 크다면
+            max = cnt;  //최대 가중치의 값을 변경
+            max_idx = idx;  //최대 가중치를 가진 노드
+        }
+        
+        
+        
+        for(Node a : list[idx]) {  //현재노드와 인접한 노드와 가중치 정보를 Node a 변수에 넣어줌
+            if(!visited[a.idx]) {  //인접노드가 방문하지 않았을 경우
+                visited[a.idx] = true;  //방문체크
+                 dfs(a.idx, cnt+a.cnt); //인접노드를 현재노드로 하고 현재노드와 인접노드의 가중치를 더해서 dfs로 보내줌
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+    }
+}
+class Node{
+    int idx,cnt;
+    Node(int idx, int cnt){
+        this.idx = idx;
+        this.cnt = cnt;
+    }
+}
+​
