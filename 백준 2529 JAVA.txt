@@ -1,0 +1,63 @@
+mport java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class Exam2529 {
+
+	static boolean[] check = new boolean[10]; // 0~9까지 check
+	static int n;
+	static char[] a = new char[10]; // 부등호는 최대 9개임
+	static ArrayList ans = new ArrayList<>();  //결과 값이 저장될 ArrayList
+
+	static boolean ck(char a, char b, char c) {
+		if (c == '<') {
+			if (a > b) {
+				return false;
+			}
+		}
+		if (c == '>') {
+			if (a < b) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	static void go(int index, String num) {
+		if (index == n + 1) {  //숫자의 개수가 부등호 개수보다 하나가 더 많을때
+			ans.add(num);  //결과값을 Arraylist에 추가 하고
+			return; 
+		}
+
+		for (int i = 0; i <= 9; i++) {
+			if (check[i])  //해당 수를 사용했다면
+				continue;  
+			if (index == 0 || ck(num.charAt(index - 1), (char) (i + '0'), a[index - 1])) {  //첫번째로 사용되는 수가 0이므로 0을 사용하거나 나머지 숫자가 ck메소드에서 부등호의 조건을 만족한다면
+				check[i] = true;  //해당 숫자 방문체크
+				go(index + 1, num + Integer.toString(i));  //해당 숫자의 다음수, 조건에 해당하는 수들을 String으로 연결하여 go메소드 반복
+				check[i] = false;
+			}
+		}
+
+	}
+
+	public static void main(String[] args) {
+
+		Scanner sc = new Scanner(System.in);
+		n = sc.nextInt();  //부등호 문자의 개수를 나타내는 정수 k
+
+		for (int i = 0; i < n; i++) {
+			a[i] = sc.next().toCharArray()[0];  //부등호 문자의 개수만큼 for문 돌려서 배열에 각각의 부등호 정리
+		}
+
+		go(0, "");  // 기호 앞뒤에 넣을 수 있는 숫자는 0부터 시작하므로 시작은 0부터
+		Collections.sort(ans);
+
+		System.out.println(ans.get(ans.size() - 1));  //리스트의 가장 마지막에 들어있는 값 최대값
+		System.out.println(ans.get(0));  //리스트의 첫번째 값 최소값
+
+	}
+
+}
+
+
