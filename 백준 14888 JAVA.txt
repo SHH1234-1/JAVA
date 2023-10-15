@@ -1,0 +1,72 @@
+package 백트래킹;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.StringTokenizer;
+
+public class BOJ14888 {
+    public static int MAX = Integer.MIN_VALUE;    // 최댓값
+    public static int MIN = Integer.MAX_VALUE;    // 최솟값
+    public static int[] operator = new int[4];    // 셋째 줄에는 합이 N-1인 4개의 정수가 주어지는데 연산자를 받을 배열 + - x / 순
+    public static int[] number;                    // 둘째 줄에는 A1, A2, ..., AN이 주어진다 숫자를 받을 int[] number 배열
+    public static int N;                        // 첫째 줄에 수의 개수 N(2 ≤ N ≤ 11)가 주어진다. 첫째줄에는 수의 개수N이 주어진다
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        N = Integer.parseInt(br.readLine());  // 첫번째 줄을 받아서 변수 n에 넣어줌
+        number = new int[N];  //숫자의 크기만큼 배열 생성
+
+        // 숫자 입력
+        StringTokenizer st = new StringTokenizer(br.readLine(), " "); //한줄 읽어들이고 " " 공백기준으로 잘라서 st에 넣어줌
+        for (int i = 0; i < N; i++) {  //N 입력받은 수의 개수만큼 for문 돌림
+            number[i] = Integer.parseInt(st.nextToken()); // Integer.parseInt형으로 string형을 형변환시키고 number 배열에 넣어줌
+        }
+
+        // 연산자 입력
+        st = new StringTokenizer(br.readLine(), " ");
+        for (int i = 0; i < 4; i++) {
+            operator[i] = Integer.parseInt(st.nextToken()); //마찬가지로 StringTokenizer로 자르고 하나씩 operator 배열에 넣어줌
+        }
+
+        dfs(number[0], 1); //dfs
+        System.out.println(MAX);
+        System.out.println(MIN);
+
+    }
+
+    public static void dfs(int num, int idx) {  //number[0]번째 수와 그 다음 수열 number[1](idx = 1)을 paramater로 받는다 
+        if (idx == N) { //깊이가 N까지 도달했다면 즉 모든 수를 사용했다면
+            MAX = Math.max(MAX, num);  //현재 수와 큰수비교
+            MIN = Math.min(MIN, num);  ////현재 수와 작은 수 비교
+            return;
+        }
+
+        for (int i = 0; i < 4; i++) {  // 연산자는 + - X / 4개이므로 4번 반복문 돌림
+           
+            if (operator[i] > 0) {    // 연산자 개수가 1개 이상인 경우
+                // 해당연산자를 1 감소시킨다
+                operator[i]--;  // 연산자를 하나 사용하므로 해당 연산자를 하나 감소시킨다
+
+                switch (i) {  //연산자 번호에 따라 
+                    case 0:
+                        dfs(num + number[idx], idx + 1);
+                        break;
+                    case 1:
+                        dfs(num - number[idx], idx + 1);
+                        break;
+                    case 2:
+                        dfs(num * number[idx], idx + 1);  
+                        break;
+                    case 3:
+                        dfs(num / number[idx], idx + 1);
+                        break;
+                }
+
+                // 재귀 호출이 종료되면 다시 해당 연산자 개수를 복구
+                operator[i]++;
+            }
+        }
+    }
+}
