@@ -1,0 +1,15 @@
+from collections import Counter
+from sys import stdin
+
+n = int(stdin.readline())  #첫째 줄에 수열 A의 크기 N (1 ≤ N ≤ 1,000,000)이 주어진다. 
+nums = list(map(int, stdin.readline().split())) #둘째에 수열 A의 원소 A1, A2, ..., AN (1 ≤ Ai ≤ 1,000,000)이 주어진다. 원소를 나눠서 분리한 후 split으로 나눈후에 int형으로 형변환한후 nums list에 넣어준다
+nums_count = Counter(nums) #Counter함수로 muns list의 수열의 개수를 nums_count list로 넣어준다
+result = [-1] * n #result list를 생성하여 수열의 개수만큼 list 크기를 만들고 -1를 넣어준다(그러한 수가 없는 경우에 오등큰수는 -1이다.)
+stack = [0] # 오등수 비교를 위한 stack 시작은 index 0 과 1을 비교해야 하므로 stack에 0을 넣어줌
+
+for i in range(1, n): # 0과 1을 비교해야 하고 앞선 stack에 index 0을 넣었으므로 for문에서는 index 1부터 시작
+    while stack and nums_count[nums[stack[-1]]] < nums_count[nums[i]]: stack에 넣은 index와 i 번째 index (stack에 넣은 index+1)
+            result[stack.pop()] = nums[i] #오등수라면 stack pop한 index에 그 수를 넣기 
+    stack.append(i) #해당index를 stack에 넣어 다음 index (index+1)에 넣기
+
+print(*result)
