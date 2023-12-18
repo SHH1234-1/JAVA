@@ -1,0 +1,83 @@
+// [백준] 14500. 테트로미노 (Java)
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Main {
+
+	static int max = Integer.MIN_VALUE; //최대값 초기화
+	static int[][] arr; //좋이에 쓰여 있는 수를 담기 위한 arr 배열
+	static boolean[][] visit;  //방문 여부
+	static int n;  //가로
+	static int m;  //세로
+
+	// 상하좌우
+	static int[] dx = {-1,1,0,0};
+	static int[] dy = {0,0,-1,1};
+
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+		StringTokenizer st = new StringTokenizer(br.readLine());  //첫번째 줄을 읽어서
+
+		n = Integer.parseInt(st.nextToken());  
+		m = Integer.parseInt(st.nextToken());
+		arr = new int[n][m];
+		visit = new boolean[n][m];
+
+		// 입력
+		for(int i = 0; i < n; i++) {
+			st = new StringTokenizer(br.readLine()); //두번째 줄부터 순서대로 읽어서
+			for(int j = 0; j < m; j++) {
+				arr[i][j] = Integer.parseInt(st.nextToken()); //차례대로 arr배열에 저장
+			}
+		}
+
+		// 전체 탐색 (dfs)
+		for(int i = 0; i < n; i++) {
+			for(int j = 0; j < m; j++) {
+				visit[i][j] = true;
+				solve(i,j,arr[i][j],1);  //i j 배열의 index 해당 배열의 value, 사용한 블럭 개수 
+				visit[i][j] = false;  //dfs후 방문 초기화
+			}
+		}
+
+		System.out.println(max);
+	}
+
+	static void solve(int row, int col, int sum, int count) {
+
+		// 테트로미노 완성 시 수들의 합 계산
+		if(count == 4) {
+			max = Math.max(max, sum);
+			return;
+		}
+
+		// 상하좌우 탐색
+		for(int i = 0; i < 4; i++) {
+			int curRow = row + dx[i];
+			int curCol = col + dy[i];
+
+			// 범위 벗어나면 예외 처리
+			if(curRow < 0 || curRow >= n || curCol < 0 || curCol >= m) {
+				continue;
+			}
+
+			// 아직 방문하지 않은 곳이라면
+			if(!visit[curRow][curCol]) {
+
+				// 보라색(ㅗ) 테트로미노 만들기 위해 2번째 칸에서 탐색 한번 더 진행
+				if(count == 2) {
+					visit[curRow][curCol] = true;
+					solve(row, col, sum + arr[curRow][curCol], count + 1);
+					visit[curRow][curCol] = false;
+				}
+
+				visit[curRow][curCol] = true;
+				solve(curRow, curCol, sum + arr[curRow][curCol], count + 1);
+				visit[curRow][curCol] = false;
+			}
+		}
+	}
+}
