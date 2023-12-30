@@ -1,0 +1,108 @@
+import java.util.*;
+ 
+public class Main {
+ 
+    static int n, m; //첫째 줄에 보드의 세로 크기 N과 가로 크기 M이 주어진다. (1 ≤ N, M ≤ 20)
+    static int[] dx = {0, 1, 0, -1};  //동전은 버튼은 "왼쪽", "오른쪽", "위", "아래"와 같이 4가지가 있다. 버튼을 누르면 두 동전이 버튼에 쓰여 있는 방향으로 동시에 이동하게 된다.
+    static int[] dy = {1, 0, -1, 0};  ////동전은 버튼은 "왼쪽", "오른쪽", "위", "아래"와 같이 4가지가 있다. 버튼을 누르면 두 동전이 버튼에 쓰여 있는 방향으로 동시에 이동하게 된다.
+    static char[][] board;  //보드의 상태를 저장하기 위한 char[][] 2차원 배열 o: 동전 .: 빈 칸 #: 벽
+    static Coin[] coin; // 동전의 위치를 저장하는 배열
+    static boolean[][][][] visited;  //동전2개의 x좌표 y좌표의 방문 여부를 확인하기 위해 4차원 배열 생성
+ 
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+ 
+        n = scan.nextInt();  //첫째 줄에 보드의 세로 크기 N과 가로 크기 M이 주어진다. (1 ≤ N, M ≤ 20)
+        m = scan.nextInt();
+ 
+        board = new char[n][m];  //보드의 크기에 맞는 배열 생성
+        coin = new Coin[2];  //동전의 개수는 항상 2개이다.
+        int coinIdx = 0;  //동전의 위치 초기화
+        for(int i = 0; i < n; i++) {
+            String str = scan.next(); //첫번째 줄 o: 동전 .: 빈 칸 #: 벽 입력
+            for(int j = 0; j < m; j++) {
+                char c = str.charAt(j);  //배열에서 하나씩 꺼내서
+                if(c == 'o') {  //동전의 위치라면
+                    coin[coinIdx++] = new Coin(i, j); //동전의 위치를 Coin객체에 저장하고 Coin객체를 coin 배열에 넣어줌
+                }
+                board[i][j] = c; //보드에 o: 동전 .: 빈 칸 #: 벽 입력를 위치에 맞게 힙력
+            }
+        }
+ 
+        visited = new boolean[n][m][n][m]; //[첫번째동전의x위치][첫번째동전의y위치][두번째동전의x위치][두번째동전의y위치]
+        System.out.println(bfs());  //조건에 맞게 동전들을 이동하다가 하나의 동전만 떨어뜨릴 수 있는 최소값을 찾는 문제이므로 BFS탐색을 활용
+    }
+ 
+    public static int bfs() {
+        Queue<towCoins> q = new LinkedList<>();  //현재 코인들의 위치 정보와 버튼을 누른횟수가 필요하므로 두 동전의 현재 위치와 현재 버튼을 누른 횟수를 저장하는 towCoins 객체를 생성하여 사용
+        q.offer(new towCoins(coin[0].x, coin[0].y, coin[1].x, coin[1].y, 0)); //현재 코인들의 위치와 (버튼누른 횟수 처음은 없으므로 0)
+        visited[coin[0].x][coin[0].y][coin[1].x][coin[1].y] = true;  //방문
+ 
+        while(!q.isEmpty()) {
+            towCoins current = q.poll();
+ 
+            if(current.count >= 10) break;  //만약, 두 동전을 떨어뜨릴 수 없거나, 버튼을 10번보다 많이 눌러야 한다면, -1을 출력한다.
+ 
+            for(int i = 0; i < 4; i++) {
+                int nx1 = current.x1 + dx[i];
+                int ny1 = current.y1 + dy[i];
+                int nx2 = current.x2 + dx[i];
+                int ny2 = current.y2 + dy[i];
+                
+                //이동할 좌표가 벽이면 이동할 수 없으므로 이동하지 않는다.
+                if(!canMoveCoin(nx1, ny1)) { 
+                    nx1 = current.x1;
+                    ny1 = current.y1;
+                }
+                if(!canMoveCoin(nx2, ny2)) {
+                    nx2 = current.x2;
+                    ny2 = current.y2;
+                }
+ 
+                int flag = 0; //떨어지지 않는 동전의 개수
+                if(nx1 >= 0 && ny1 >= 0 && nx1 < n && ny1 < m) flag++;
+                if(nx2 >= 0 && ny2 >= 0 && nx2 < n && ny2 < m) flag++;
+ 
+                if(flag == 1) return current.count + 1;  //동전이 하나 떨어졌다면 현재 count + 1을 return 값으로 
+                else if(flag == 2 && !visited[nx1][ny1][nx2][ny2]) { // 둘다 떨어지지 않았다면
+                    visited[nx1][ny1][nx2][ny2] = true;  //방문
+                    q.offer(new towCoins(nx1, ny1, nx2, ny2, current.count + 1)); //현재 동전위치를 q에 넣고 count+1 시키고 다시 bfs로 돌림
+                }
+            }
+        }
+        return -1;  //만약, 두 동전을 떨어뜨릴 수 없거나, 버튼을 10번보다 많이 눌러야 한다면, -1을 출력한다.
+    }
+ 
+    public static boolean canMoveCoin(int nx, int ny) { //현재 코인의 x좌표 y좌표
+        if(nx >= 0 && ny >= 0 && nx < n && ny < m && board[nx][ny] == '#') { //board[nx][ny] == '#'벽이라면 이동불가
+            return false;
+        }
+        return true;  //아니라면 이동가능
+    }
+ 
+    public static class towCoins { //두 동전의 위치와 현재 버튼을 누른 횟수를 기록하는 객체
+        int x1;
+        int y1;
+        int x2; 
+        int y2;
+        int count;
+ 
+        public towCoins(int x1, int y1, int x2, int y2, int count) {  //코인1 x위치, 코인1 y 위치, 코인2 x위치, 코인2 y 위치, 버튼누른 횟수 count
+            this.x1 = x1;
+            this.y1 = y1;
+            this.x2 = x2;
+            this.y2 = y2;
+            this.count = count;
+        }
+    }
+ 
+    public static class Coin { //동전의 좌표를 기억하는 객체
+        int x;
+        int y;
+ 
+        public Coin(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+}
