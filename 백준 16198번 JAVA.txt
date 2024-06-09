@@ -1,0 +1,37 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.StringTokenizer;
+
+public class Main {
+    static int N;  //에너지 개수
+    static int max = Integer.MIN_VALUE;  //에너지 양의 최댓값 초기화
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());  //첫째 줄에 에너지 구슬의 개수 N(3 ≤ N ≤ 10)이 주어진다.
+
+        List<Integer> list = new ArrayList<>(); //에너지 구슬의 무게을 담기위한 list
+        StringTokenizer st = new StringTokenizer(br.readLine()); //둘째 줄에는 에너지 구슬의 무게 W1, W2, ..., WN을 공백으로 구분해 주어진다. (1 ≤ Wi ≤ 1,000)
+        for (int i = 0; i < N; i++) list.add(Integer.parseInt(st.nextToken())); //반복문으로 에너지 구슬을 list에 담음
+
+        charge(list,0);  //에너지양의 무게를 담은 list, 에너지 양의 최댓값 0으로 초기화해서 파라매터 값으로 보냄
+        System.out.print(max);
+    }
+    static void charge(List<Integer> list, int sum) {
+        if (list.size() == 2) { // 첫 번째와 마지막 에너지 구슬은 고를 수 없다 즉 첫번째와 마지막 에너지 양만 남았을때 
+            max = Math.max(max, sum); //에너지양의 최대값을 모두 더한다
+            return;
+        }
+
+        for (int i = 1; i < list.size() - 1; i++) { //첫 번째와 마지막 에너지 구슬은 고를 수 없다.
+            int tmp = list.get(i); //현재 구슬 번호의 무게를 tmp변수에 넣음
+            int chargeValue = list.get(i - 1) * list.get(i + 1); //Wx-1 × Wx+1의 에너지를 모을 수 있다.
+            list.remove(i);  //x번째 에너지 구슬의 무게를  삭제한다.
+            charge(list, sum + chargeValue); //남아있는 구슬의 무게 기존에 있는 에너지양 + 추가한 에너지양 
+            list.add(i, tmp); //해당 에너지 
+        }
+    }
+}
