@@ -1,0 +1,66 @@
+import java.io.*;
+
+public class Main {
+
+    static int N; // N
+    static int resultCount; //게임 경우의 수
+    static int[] board; //퀸을 놓는 배열(판) = 게임판
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        N = Integer.parseInt(br.readLine()); //N
+
+        board = new int[N]; //판 초기화(크기)
+
+        backTracking(0); // 처음 시작은 0행부터 시작
+        br.close();
+        System.out.println(resultCount);
+    }
+
+    static void backTracking(int queenCount) {
+        if (queenCount == N) { //퀸을 N개 모두 놓았으면 경우의 수를 하나 증가시킨다.
+            resultCount++; //경우의 수 증가
+            return;
+        }
+
+        for(int i = 0; i < N; i++) {
+            board[queenCount] = i;  //board 배열에서 index는 행의 위치는 value는 열의 위치를 의미
+
+            // 놓을 수 있는 위치일 경우 재귀호출
+            if (checkQueen(queenCount)) {  //현재 행의 위치에서 놓을 수 있는 열의 위치를 찾으면                
+		backTracking(queenCount + 1); //다음행위 위치로 행의 위치 변경 (한행에서 퀸을 놓으면  그 행에서 더이상 퀸을 놓을 수 없으므로 위치 변경)
+            }
+        }
+
+    }
+
+    //해당 열자리에 퀸을 놓을 수 있는지 확인하는 메소드
+    static boolean checkQueen(int col){
+        for (int i = 0; i < col; i++) {  //현재 행과 이전 행을 for문으로 비교하면서
+                       if (board[col] == board[i]) {  //이전행에서 퀸을 놓은 행의 열과 현재행의 열이 같다면
+                return false;
+            }
+
+
+            // 현 자리에서 동일한 대각선에 위치한 경우
+            /*
+                (0,0) (1,0) (2,0) (3,0)
+                (0,1) (1,1) (2,1) (3,1)
+                (0,2) (1,2) (2,2) (3,2)
+                (0,3) (1,3) (2,3) (3,3)
+
+                => 규칙을 보면 같은 대각선에 위치한다고 판별하는 기준이 행과 열의 차가 같은 값이 동일한 대각선이다.
+                   예를 들어, (0,0)과 동일한 대각선에 위치한다는 기준은
+                   (1,1), (2,2), (3,3)도 행과 열의 차가 0으로 같다.
+                   또, 예를 들면 (1,0)과 같은 대각선은 차가 1인 것인데
+                   (2,1),(0,1),(3,2),(1,2 : 차피 같은 열이다.)이 있다.
+                   * 중요한 포인트는 그냥 뺀게 아니라 절대값(수의 차이)이다.
+            */
+            else if (Math.abs(col - i) == Math.abs(board[col] - board[i])) {  //대각선인 경우 현재행에서 이전행을 뺀값과 현재 열에서 이전 열을 뺀값이 같다
+                return false;
+            }
+        }
+        return true;
+    }
+}
